@@ -10,7 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spotibae">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activites.Settings.Settings"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Messaging.MusicPlayer"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Messaging.Messages"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Messaging.MessagesList"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Matching.Matching"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Welcome.Signup"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Welcome.Login"
+            android:exported="true" />
+        <activity
+            android:name=".Activites.Welcome.WelcomeScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
