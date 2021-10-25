@@ -1,4 +1,4 @@
-package com.example.spotibae.Activites.Messaging;
+package com.example.spotibae.Activities.Matching;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.spotibae.R;
 
-public class MessagesList extends AppCompatActivity {
+public class Matching extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_messages);
+        setContentView(R.layout.activity_matching);
     }
 }

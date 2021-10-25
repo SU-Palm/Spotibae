@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Spotibae</string>
+    <string name="login">Login</string>
+    <string name="SignUp">Sign Up</string>
+    <string name="signup">SignUp</string>
+    <string name="termsAndConditions">By continuing, you agree to accept our Privacy Policy &amp; Terms of Service.</string>
+    <string name="welcomeMessage">Meet your music match!</string>
+    <string name="matched">Matched</string>
+    <string name="denied">Denied</string>
+    <string name="navMatch">Match</string>
+    <string name="navMessages">Messages</string>
+    <string name="navSettings">Settings</string>
+    <string name="totalMatches">Total Matches: %1$d</string>
+    <string name="matches">Matches</string>
+    <string name="report">Report</string>
+    <string name="Chat">Chat</string>
+    <string name="giveNumber">Give Number</string>
+    <string name="unmatch">Unmatch</string>
+    <string name="spotifyVerified">Spotify Verified</string>
+    <string name="spotifyNotVerified">Spotify Not Verified</string>
+    <string name="spotify">Spotify</string>
+    <string name="resetPassword">Reset Password</string>
+    <string name="email">Email</string>
+    <string name="age">Age</string>
+    <string name="password">Password</string>
+    <string name="bio">Bio</string>
+    <string name="saveChanges">Save Changes</string>
 </resources>

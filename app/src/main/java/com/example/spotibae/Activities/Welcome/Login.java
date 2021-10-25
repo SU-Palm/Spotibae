@@ -1,4 +1,4 @@
-package com.example.spotibae.Activites.Messaging;
+package com.example.spotibae.Activities.Welcome;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.spotibae.R;
 
-public class Messages extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_messages_matched);
+        setContentView(R.layout.activity_login);
     }
 }
