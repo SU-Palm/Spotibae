@@ -29,7 +29,8 @@
         android:id="@+id/imageView"
         android:layout_width="470dp"
         android:layout_height="314dp"
-        android:src="@drawable/headphones" />
+        android:src="@drawable/headphones"
+        tools:srcCompat="@drawable/headphones" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,11 +42,9 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_corner"
-            android:minWidth="20dp"
-            android:minHeight="20dp"
             android:text="@string/login"
             android:textColor="@color/backgroundBlack"
-            android:textSize="20sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,11 +54,13 @@
             android:layout_width="325dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/rounded_corner"
             android:minHeight="20dp"
             android:text="@string/SignUp"
             android:textColor="@color/backgroundBlack"
-            android:textSize="20sp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loginButton" />

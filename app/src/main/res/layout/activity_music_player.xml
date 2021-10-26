@@ -4,6 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Messaging.MusicPlayer">
+    tools:context=".Activities.Messaging.MusicPlayer"
+    android:background="@color/backgroundBlack">
+
+    <ImageView
+        android:id="@+id/spotifyLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/spotifylogo"
+        app:layout_constraintEnd_toStartOf="@+id/spotibaeTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/spotibaeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="70dp"
+        android:text="@string/app_name"
+        android:textSize="40sp"
+        android:theme="@style/themeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,7 @@ public class WelcomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Initialize Firebase Auth
-        //mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         this.setListeners();
     }
 
@@ -28,10 +28,10 @@ public class WelcomeScreen extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //if(currentUser != null){
-            //skipToHome();
-        //}
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            skipToHome();
+        }
     }
 
     private void setListeners() {
