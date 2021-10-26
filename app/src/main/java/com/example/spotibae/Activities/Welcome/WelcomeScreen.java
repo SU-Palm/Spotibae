@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.example.spotibae.Activities.Matching.Matching;
 import com.example.spotibae.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,7 +51,7 @@ public class WelcomeScreen extends AppCompatActivity {
     }
 
     private void skipToHome() {
-        Intent intent = new Intent(this, Matching.class);
+        Intent intent = new Intent(this, BaseActivity.class);
         this.startActivity(intent);
     }
 

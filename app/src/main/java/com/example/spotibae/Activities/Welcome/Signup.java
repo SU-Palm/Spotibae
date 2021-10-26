@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.spotibae.Activities.Matching.Matching;
 import com.example.spotibae.Models.User;
 import com.example.spotibae.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,7 +70,7 @@ public class Signup extends AppCompatActivity {
                                             // signUp_progress.setVisibility(View.GONE);
 
                                             Toast.makeText(Signup.this, "Successful Registered", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(Signup.this, Matching.class);
+                                            Intent intent = new Intent(Signup.this, BaseActivity.class);
                                             startActivity(intent);
                                             finish();
                                         }

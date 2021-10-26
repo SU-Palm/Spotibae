@@ -13,8 +13,8 @@
         android:icon="@drawable/ic_action_messages"
         android:title="@string/navMessages"/>
     <item
-        android:id="@+id/navSettings"
+        android:id="@+id/navQR"
         android:enabled="true"
-        android:icon="@drawable/ic_action_settings"
-        android:title="@string/navSettings"/>
+        android:icon="@drawable/ic_action_qr"
+        android:title="@string/navqr"/>
 </menu>

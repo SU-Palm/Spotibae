@@ -58,4 +58,10 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="themeSmall">
+        <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/green_dark</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

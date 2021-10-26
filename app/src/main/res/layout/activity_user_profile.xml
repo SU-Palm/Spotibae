@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.User.UserProfile">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="-1dp"
+                app:srcCompat="@drawable/defaultprofile" />
+
+            <ImageView
+                android:id="@+id/uploadPicButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="170dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="170dp"
+                android:background="@drawable/uploadphoto"
+                android:backgroundTintMode="src_atop"
+                app:srcCompat="@drawable/uploadphoto" />
+
+            <TextView
+                android:id="@+id/profileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profilePic"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="-10dp"
+                android:text="Joe"
+                android:textSize="30sp"
+                android:theme="@style/themeText" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/profileName"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:background="@color/spotifyGreen" />
+
+            <TextView
+                android:id="@+id/accountSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profileName"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Account Settings"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/emailButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountSettings"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Email            jmbalascio@hotmail.com   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/phoneNumberButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Phone Number                       5182001921   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/discovery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/phoneNumberButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Discovery"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/locationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/discovery"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Location                           Syracuse, NY   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/distanceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Distance                                   50 miles   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/ageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distanceButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Age Preference                            21 - 25   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/preferenceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ageButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Show Me                                     Women   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/preferenceButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Profile"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/bioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Bio               I love Chance the Rapper   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/nameButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bioButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Name                           Joseph Balascio   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/genderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Gender                                           Male   "
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Fragments.QRFrag">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        tools:context=".Activities.Matching.Matching"
+        android:background="@color/backgroundBlack">
+
+        <TextView
+            android:id="@+id/qrText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="0dp"
+            android:text="QR Code"
+            android:textSize="15sp"
+            android:theme="@style/themeSmall" />
+
+        <ImageView
+            android:id="@+id/fragmentContainerView"
+            android:layout_width="wrap_content"
+            android:layout_height="450dp"
+            android:layout_above="@+id/scanQRCode"
+            android:layout_below="@+id/qrText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            app:srcCompat="@drawable/qrcode"/>
+
+        <Button
+            android:id="@+id/scanQRCode"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="@color/spotifyGreen"
+            android:text="@string/scan_qr"
+            android:textColor="@color/white"
+            android:theme="@style/themeText"
+            tools:layout_editor_absoluteX="31dp"
+            tools:layout_editor_absoluteY="446dp" />
+    </RelativeLayout>
+
+</FrameLayout>

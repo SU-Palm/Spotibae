@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.spotibae.Activities.Matching.Matching;
 import com.example.spotibae.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,7 +65,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void login() {
-        Intent intent = new Intent(this, Matching.class);
+        Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
