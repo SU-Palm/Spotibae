@@ -16,14 +16,16 @@
             android:id="@+id/fragmentContainerView"
             android:name="com.example.spotibae.Fragments.UserFrag"
             android:layout_width="wrap_content"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/denyButton"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
             android:gravity="center" />
+
 
         <ImageView
             android:id="@+id/denyButton"
@@ -33,9 +35,17 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="50dp"
             android:layout_marginBottom="0dp"
-            app:srcCompat="@drawable/denybutton"
-            tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="446dp" />
+            app:srcCompat="@drawable/denybutton" />
+
+        <ImageView
+            android:id="@+id/refreshButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toEndOf="@+id/denyButton"
+            app:srcCompat="@drawable/refreshbutton" />
 
         <ImageView
             android:id="@+id/matchButton"
@@ -45,9 +55,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="0dp"
-            app:srcCompat="@drawable/acceptbutton"
-            tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="446dp" />
+            app:srcCompat="@drawable/acceptbutton" />
     </RelativeLayout>
 
 </FrameLayout>

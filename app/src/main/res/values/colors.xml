@@ -6,6 +6,7 @@
     <color name="messageBoxGray">#EAECF2</color>
     <color name="green_dark">#003300</color>
     <color name="iconActiveGreen">#296F29</color>
+    <color name="transparent">#aarrggbb</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

@@ -3,12 +3,19 @@ package com.example.spotibae.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.spotibae.Adapter.Adapter;
+import com.example.spotibae.Models.ModelClass;
 import com.example.spotibae.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +23,12 @@ import com.example.spotibae.R;
  * create an instance of this fragment.
  */
 public class MessagesFrag extends Fragment {
+
+    RecyclerView mrecyclerView;
+    LinearLayoutManager layoutManager;
+    List<ModelClass> userList;
+    Adapter adapter;
+    View view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,10 +70,67 @@ public class MessagesFrag extends Fragment {
         }
     }
 
+    private void initRecyclerView() {
+        /*
+        mrecyclerView= view.findViewById(R.id.recyclerView);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        mrecyclerView.setLayoutManager(layoutManager);
+        adapter=new Adapter(userList);
+        mrecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+         */
+        mrecyclerView = view.findViewById(R.id.recyclerView);
+        mrecyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        mrecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        mrecyclerView.setAdapter(new Adapter(userList));
+    }
+
+    private void initData() {
+        userList = new ArrayList<>();
+
+        userList.add(new ModelClass(R.drawable.gi,"Anjali","How are you?","10:45 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.bo,"Brijesh","I am fine","15:08 pm","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.boy,"Sam","You Know?","1:02 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.girl,"Divya","How are you?","12:55 pm","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.gi,"Simran","This is Easy","13:50 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.boy,"Karan","I am Don","1:08 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.bo,"Sameer","You Know this?","4:02 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.girl,"Baby","How ?","11:55 pm","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.gi,"Anjali","How are you?","10:45 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.bo,"Brijesh","I am fine","15:08 pm","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.boy,"Sam","You Know?","1:02 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.girl,"Divya","How are you?","12:55 pm","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.gi,"Simran","This is Easy","13:50 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.boy,"Karan","I am Don","1:08 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.bo,"Sameer","You Know this?","4:02 am","_______________________________________"));
+
+        userList.add(new ModelClass(R.drawable.girl,"Baby","How ?","11:55 pm","_______________________________________"));
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_messages, container, false);
+        view = inflater.inflate(R.layout.fragment_messages, container, false);
+        initData();
+        initRecyclerView();
+        return view;
     }
 }

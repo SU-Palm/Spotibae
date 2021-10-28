@@ -6,42 +6,69 @@
     android:layout_height="wrap_content"
     tools:context=".Fragments.UserFrag">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/nameText"
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Joseph"
-            android:textSize="20dp"
-            android:theme="@style/themeText"/>
+            android:backgroundTint="@color/black">
 
-        <TextView
-            android:id="@+id/ageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="22"
-            android:theme="@style/themeText"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/layout_bg"
+                android:color="@color/spotifyGreen">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            app:srcCompat="@drawable/acidrao" />
+                <TextView
+                    android:id="@+id/nameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/imageView2"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="-30dp"
+                    android:backgroundTint="@color/spotifyGreen"
+                    android:text="Joseph, "
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    android:theme="@style/themeText" />
 
-        <TextView
-            android:id="@+id/bioText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I love rap, old school, and hiphop"
-            android:theme="@style/themeText"/>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/ageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/imageView2"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="-30dp"
+                    android:layout_toEndOf="@+id/nameText"
+                    android:backgroundTint="@color/spotifyGreen"
+                    android:text="22"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    android:theme="@style/themeText" />
 
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="360dp"
+                    android:layout_height="400dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="-30dp"
+                    app:srcCompat="@drawable/acidrao" />
 
+                <TextView
+                    android:id="@+id/bioText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nameText"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="0dp"
+                    android:backgroundTint="@color/spotifyGreen"
+                    android:text="I love rap, old school, and hiphop"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:theme="@style/themeText" />
+            </RelativeLayout>
 
+        </androidx.cardview.widget.CardView>
 </FrameLayout>

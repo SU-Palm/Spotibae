@@ -15,8 +15,7 @@
         <activity
             android:name=".Activities.User.UserProfile"
             android:exported="true"
-            android:parentActivityName=".Activities.Welcome.BaseActivity"
-            android:theme="@style/Theme.Login" />
+            android:theme="@style/Theme.Settings" />
         <activity
             android:name=".Activities.Welcome.BaseActivity"
             android:exported="true"

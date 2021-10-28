@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.User.UserProfile">
+    tools:context=".Activities.User.UserProfile" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,26 +15,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="Done"
+                android:textSize="20sp"
+                android:theme="@style/themeSmall" />
+
             <ImageView
                 android:id="@+id/profilePic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="-1dp"
                 app:srcCompat="@drawable/defaultprofile" />
 
             <ImageView
                 android:id="@+id/uploadPicButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
+                android:layout_width="58dp"
+                android:layout_height="55dp"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="170dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="170dp"
+                android:layout_marginTop="49dp"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/uploadphoto"
                 android:backgroundTintMode="src_atop"
                 app:srcCompat="@drawable/uploadphoto" />
@@ -44,8 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profilePic"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="-10dp"
                 android:text="Joe"
                 android:textSize="30sp"
@@ -84,9 +91,21 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Email            jmbalascio@hotmail.com   "
+                android:text="Email"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/phoneNumberButton"
+                android:layout_alignTop="@+id/emailButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:text="jmbalascio@hotmail.com"
+                android:theme="@style/ButtonText" />
 
             <Button
                 android:id="@+id/phoneNumberButton"
@@ -98,9 +117,20 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Phone Number                       5182001921   "
+                android:text="Phone Number"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:text="5182004310"
+                android:theme="@style/ButtonText" />
 
             <TextView
                 android:id="@+id/discovery"
@@ -124,9 +154,22 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Location                           Syracuse, NY   "
+                android:text="Location"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/distanceButton"
+                android:layout_alignTop="@+id/locationButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text="Syracuse, NY"
+                android:theme="@style/ButtonText" />
 
             <Button
                 android:id="@+id/distanceButton"
@@ -138,9 +181,23 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Distance                                   50 miles   "
+                android:text="Distance"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ageButton"
+                android:layout_below="@+id/locationButton"
+                android:layout_alignTop="@+id/distanceButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text="50 Miles"
+                android:theme="@style/ButtonText" />
 
             <Button
                 android:id="@+id/ageButton"
@@ -152,9 +209,23 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Age Preference                            21 - 25   "
+                android:text="Age Preference"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userAgePref"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/preferenceButton"
+                android:layout_below="@+id/ageButton"
+                android:layout_alignTop="@+id/ageButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text="21 - 25"
+                android:theme="@style/ButtonText" />
 
             <Button
                 android:id="@+id/preferenceButton"
@@ -166,9 +237,21 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Show Me                                     Women   "
+                android:text="Show Me"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/genderPref"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ageButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text="Women"
+                android:theme="@style/ButtonText" />
 
             <TextView
                 android:id="@+id/profile"
@@ -192,9 +275,21 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Bio               I love Chance the Rapper   "
+                android:text="Bio"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userBio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/nameButton"
+                android:layout_alignTop="@+id/bioButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:text="I love Chance the Rapper"
+                android:theme="@style/ButtonText" />
 
             <Button
                 android:id="@+id/nameButton"
@@ -206,9 +301,23 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Name                           Joseph Balascio   "
+                android:text="Name"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/genderButton"
+                android:layout_below="@+id/nameButton"
+                android:layout_alignTop="@+id/nameButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text="Joseph Balascio"
+                android:theme="@style/ButtonText" />
 
             <Button
                 android:id="@+id/genderButton"
@@ -220,13 +329,79 @@
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
-                android:text="Gender                                           Male   "
+                android:text="Gender"
+                android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
 
+            <TextView
+                android:id="@+id/userGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text="Male"
+                android:theme="@style/ButtonText" />
+
+            <TextView
+                android:id="@+id/accountManagement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/genderButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Account Management"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/connectSpotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountManagement"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Connect to Spotify"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/resetPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/connectSpotify"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Reset Password"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/signOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resetPassword"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Sign Out"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
         </RelativeLayout>
-
     </ScrollView>
-
-
 </RelativeLayout>

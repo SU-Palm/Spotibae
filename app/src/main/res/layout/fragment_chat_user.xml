@@ -8,47 +8,77 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingTop="10dp"
+        android:paddingRight="10dp"
         android:paddingBottom="-5dp">
 
-        <TextView
-            android:id="@+id/nameofuser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/cardviewofuser"
-            android:text="Name Display Here"
-            android:textSize="20sp"
-            android:theme="@style/themeText"/>
-
         <androidx.cardview.widget.CardView
+            android:id="@+id/imageview1"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:layout_marginBottom="20dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:id="@+id/cardviewofuser"
+            android:layout_marginBottom="20dp"
             app:cardCornerRadius="55dp">
 
             <ImageView
+                android:id="@+id/imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher_background"
-                android:id="@+id/imageviewofuser"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
 
         </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/imageview1"
+            android:text="Name Display Here"
+            android:textSize="20sp"
+            android:theme="@style/themeText" />
+
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@id/imageview1"
+            android:text="How are you"
+            android:textColor="#419136"
+            android:textSize="10sp"
+            android:theme="@style/themeSmall" />
+
+        <TextView
+            android:id="@+id/textview3"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp"
+            android:text="10:43Am"
+            android:textSize="10sp"
+            android:theme="@style/themeText">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/Divider"
             android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginLeft="10dp"
-            android:backgroundTint="#a6a6a6"
-            android:background="#a6a6a6"
-            android:layout_below="@id/cardviewofuser"
-            android:layout_toRightOf="@id/cardviewofuser"
-            android:layout_marginTop="-5dp" />
+            android:layout_height="20dp"
+            android:layout_below="@id/imageview1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/imageview1"
+            android:text="hello"
+            android:textColor="@color/spotifyGreen">
+
+        </TextView>
     </RelativeLayout>
 </RelativeLayout>
