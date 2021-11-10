@@ -36,11 +36,14 @@ public class ChangeAgePreference extends AppCompatActivity {
         doneButton.setOnClickListener( view -> {
             String lowestAgeText = lowestAgePref.getText().toString();
             String highestAgeText = highestAgePref.getText().toString();
+
             if(lowestAgeText.isEmpty() || highestAgeText.isEmpty()) {
                 Intent intent = new Intent(this, UserProfile.class);
                 startActivity(intent);
             } else {
-                changeAgePref(lowestAgeText, highestAgeText, uid);
+                long lowestAgeNum = Long.parseLong(lowestAgeText);
+                long highestAgeNum = Long.parseLong(highestAgeText);
+                changeAgePref(lowestAgeNum, highestAgeNum, uid);
 
                 Intent intent = new Intent(this, UserProfile.class);
                 startActivity(intent);
@@ -48,8 +51,8 @@ public class ChangeAgePreference extends AppCompatActivity {
         });
     }
 
-    public void changeAgePref(String lowestAgeText, String highestAgeText, String uid) {
-        mDatabase.child(uid).child("lowestAgePref").setValue(lowestAgeText);
-        mDatabase.child(uid).child("highestAgePref").setValue(highestAgeText);
+    public void changeAgePref(long lowestAgeNum, long highestAgeNum, String uid) {
+        mDatabase.child(uid).child("lowestAgePref").setValue(lowestAgeNum);
+        mDatabase.child(uid).child("highestAgePref").setValue(highestAgeNum);
     }
 }

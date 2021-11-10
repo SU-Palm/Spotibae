@@ -33,4 +33,14 @@
     <string name="title_notifications">Notifications</string>
     <string name="navqr">QR</string>
     <string name="scan_qr">Scan QR</string>
+    <string name="no_location">No Location</string>
+    <string name="location_permission_denied">Permission Denied</string>
+
+    <integer-array name="img_id_arr">
+        <item>@drawable/acidrao</item>
+        <item>@drawable/acidrao</item>
+        <item>@drawable/acidrao</item>
+        <item>@drawable/acidrao</item>
+    </integer-array>
+
 </resources>

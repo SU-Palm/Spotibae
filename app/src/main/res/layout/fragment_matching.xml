@@ -26,15 +26,16 @@
             android:layout_marginBottom="0dp"
             android:gravity="center" />
 
-
         <ImageView
             android:id="@+id/denyButton"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/refreshButton"
             app:srcCompat="@drawable/denybutton" />
 
         <ImageView
@@ -42,9 +43,9 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="0dp"
-            android:layout_toEndOf="@+id/denyButton"
+            android:layout_toStartOf="@+id/matchButton"
             app:srcCompat="@drawable/refreshbutton" />
 
         <ImageView
@@ -53,7 +54,7 @@
             android:layout_height="75dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="60dp"
             android:layout_marginBottom="0dp"
             app:srcCompat="@drawable/acceptbutton" />
     </RelativeLayout>

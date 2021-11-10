@@ -32,12 +32,13 @@ public class ChangeDistance extends AppCompatActivity {
         doneButton = findViewById(R.id.changeDistance);
         distance = findViewById(R.id.editTextDistance);
         doneButton.setOnClickListener( view -> {
-            String distanceText = distance.getText().toString();
-            if(distanceText.isEmpty()) {
+            String checker = distance.getText().toString();
+            if(checker.isEmpty()) {
                 Intent intent = new Intent(this, UserProfile.class);
                 startActivity(intent);
             } else {
-                changeDistance(distanceText, uid);
+                long distanceNum = Long.parseLong(distance.getText().toString());
+                changeDistance(distanceNum, uid);
 
                 Intent intent = new Intent(this, UserProfile.class);
                 startActivity(intent);
@@ -45,7 +46,7 @@ public class ChangeDistance extends AppCompatActivity {
         });
     }
 
-    public void changeDistance(String distanceText, String uid) {
-        mDatabase.child(uid).child("distance").setValue(distanceText);
+    public void changeDistance(long distanceNum, String uid) {
+        mDatabase.child(uid).child("distance").setValue(distanceNum);
     }
 }

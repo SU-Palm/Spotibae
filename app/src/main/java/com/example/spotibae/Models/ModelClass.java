@@ -9,8 +9,6 @@ public class ModelClass {
     //new code
     private String divider;
 
-
-
     public ModelClass(int imageview, String textview1, String textview2, String textview3, String divider)
     {
         this.imageview=imageview;

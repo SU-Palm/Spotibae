@@ -25,6 +25,7 @@ import com.example.spotibae.Activities.User.UserProfile;
 import com.example.spotibae.Fragments.MatchingFrag;
 import com.example.spotibae.Fragments.MessagesFrag;
 import com.example.spotibae.Fragments.QRFrag;
+import com.example.spotibae.Fragments.UserFrag;
 import com.example.spotibae.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,14 +60,14 @@ public class BaseActivity extends AppCompatActivity {
         btm_nav = findViewById(R.id.bottom_navigation);
         profileImageButton = findViewById(R.id.profilePic);
 
-        getFragment(new MatchingFrag());
+        getFragment(new UserFrag());
 
         btm_nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navMatch:
-                        getFragment(new MatchingFrag());
+                        getFragment(new UserFrag());
                         return true;
 
                     case R.id.navMessages:

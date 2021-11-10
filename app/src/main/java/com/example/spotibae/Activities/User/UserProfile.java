@@ -29,6 +29,7 @@ import com.example.spotibae.Activities.User.Settings.ChangeBio;
 import com.example.spotibae.Activities.User.Settings.ChangeDistance;
 import com.example.spotibae.Activities.User.Settings.ChangeGender;
 import com.example.spotibae.Activities.User.Settings.ChangeGenderMatchPreference;
+import com.example.spotibae.Activities.User.Settings.ChangeLocation;
 import com.example.spotibae.Activities.User.Settings.ChangeName;
 import com.example.spotibae.Activities.User.Settings.ChangePhoneNumber;
 import com.example.spotibae.Activities.Welcome.BaseActivity;
@@ -50,6 +51,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -57,12 +61,12 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class UserProfile extends AppCompatActivity {
-    // Firebase firebase;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef;
     StorageReference profileRef;
+
     TextView doneButton;
     Button signOutButton;
     Button phoneNumberButton;
@@ -72,6 +76,9 @@ public class UserProfile extends AppCompatActivity {
     Button genderButton;
     Button nameButton;
     Button agePrefButton;
+    Button verifySpotifyButton;
+    Button locationButton;
+    Button passwordResetButton;
     TextView profileName;
     TextView userEmailAddress;
     TextView userPhoneNumber;
@@ -83,12 +90,17 @@ public class UserProfile extends AppCompatActivity {
     TextView userName;
     TextView userGender;
 
-    ImageView profilePic;
-    ImageView uploadPicButton;
-
+    // Uploading image and other stuff
     private Uri filepath;
     private final int PICK_IMAGE_REQUEST = -1;
     ActivityResultLauncher<Intent> activityResultLauncher;
+    ImageView profilePic;
+    ImageView uploadPicButton;
+
+    // Spotify
+    private static final String CLIENT_ID = "04fabd9b23d4470e8c29414d750c8d0f";
+    private static final String REDIRECT_URI = "http://com.example.spotibae/callback";
+    private SpotifyAppRemote mSpotifyAppRemote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +159,24 @@ public class UserProfile extends AppCompatActivity {
         uploadPicButton.setOnClickListener( view -> {
             chooseImage();
         });
+
+        verifySpotifyButton = findViewById(R.id.connectSpotify);
+
+        verifySpotifyButton.setOnClickListener(view -> {
+            authenticateSpotify();
+        });
+
+        locationButton = findViewById(R.id.locationButton);
+        locationButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, ChangeLocation.class);
+            startActivity(intent);
+        });
+
+        passwordResetButton = findViewById(R.id.resetPassword);
+        passwordResetButton.setOnClickListener( view -> {
+            passwordReset();
+        });
+
     }
 
     public void setImage(String email) {
@@ -270,15 +300,15 @@ public class UserProfile extends AppCompatActivity {
                     HashMap<String, Object> user = (HashMap<String, Object>) task.getResult().getValue();
                     String firstName = user.get("firstName").toString();
                     String lastName = user.get("lastName").toString();
-                    String age = user.get("age").toString();
+                    long age = (long)user.get("age");
                     String email = user.get("email").toString();
                     String fullName = user.get("fullName").toString();
                     String bio = user.get("bio").toString();
                     String gender = user.get("gender").toString();
                     String phoneNumber = user.get("phoneNumber").toString();
-                    String distance = user.get("distance").toString();
-                    String lowestAgePref = user.get("lowestAgePref").toString();
-                    String highestAgePref = user.get("highestAgePref").toString();
+                    long distance = (long)user.get("distance");
+                    long lowestAgePref = (long)user.get("lowestAgePref");
+                    long highestAgePref = (long)user.get("highestAgePref");
                     String genderPref = user.get("genderPref").toString();
                     boolean spotifyVerified = (boolean) user.get("spotifyVerified");
                     String location = user.get("location").toString();
@@ -286,8 +316,8 @@ public class UserProfile extends AppCompatActivity {
                     userEmailAddress.setText(email);
                     userPhoneNumber.setText(phoneNumber);
                     userLocation.setText(location);
-                    userDistance.setText(distance);
-                    userAgePref.setText(lowestAgePref + " - " + highestAgePref);
+                    userDistance.setText(String.valueOf(distance));
+                    userAgePref.setText(String.valueOf(lowestAgePref) + " - " + String.valueOf(highestAgePref));
                     genderPrefText.setText(genderPref);
                     userBio.setText(bio);
                     userName.setText(fullName);
@@ -298,45 +328,51 @@ public class UserProfile extends AppCompatActivity {
         });
     }
 
-
-    /*
-    public void initData() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        String uId = user.getUid();
-        firebase = new Firebase(mAuth, mDatabase);
-
-        User newUser = firebase.getUserFromFirebase(uId);
-
-        String firstName = newUser.firstName;
-        String lastName = newUser.lastName;
-        long age = newUser.age;
-        String email = newUser.email;
-        String fullName = newUser.fullName;
-        String bio = newUser.bio;
-        String gender = newUser.gender;
-        String phoneNumber = newUser.phoneNumber;
-        long distance = newUser.distance;
-        long lowestAgePref = newUser.lowestAgePref;
-        long highestAgePref = newUser.highestAgePref;
-        String genderPref = newUser.genderPref;
-        boolean spotifyVerified = newUser.spotifyVerified;
-        String location = newUser.location;
-        profileName.setText(firstName);
-        userEmailAddress.setText(email);
-        userPhoneNumber.setText(phoneNumber);
-        userLocation.setText(location);
-        userDistance.setText((int) distance);
-        userAgePref.setText(lowestAgePref + " - " + highestAgePref);
-        genderPrefText.setText(genderPref);
-        userBio.setText(bio);
-        userName.setText(fullName);
-        userGender.setText(gender);
-    }
-    */
-
     public void signOut() {
         mAuth.signOut();
         Intent intent = new Intent(this, WelcomeScreen.class);
         this.startActivity(intent);
+    }
+
+    public void passwordReset() {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(userEmailAddress.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("MainActivity", "Email sent.");
+                        }
+                    }
+                });
+    }
+
+    public void authenticateSpotify() {
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(this, connectionParams,
+                new Connector.ConnectionListener() {
+
+                    @Override
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.d("MainActivity", "Connected! Yay!");
+                        // Now you can start interacting with App Remote
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String uid = user.getUid();
+                        mDatabase.child(uid).child("spotifyVerified").setValue(true);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Log.e("MainActivity", throwable.getMessage(), throwable);
+
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
+
     }
 }

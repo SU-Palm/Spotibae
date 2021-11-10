@@ -3,10 +3,12 @@ package com.example.spotibae.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.spotibae.R;
 
@@ -25,6 +27,9 @@ public class MatchingFrag extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    View view;
+    ImageView matchButton;
+    ImageView denyButton;
 
     public MatchingFrag() {
         // Required empty public constructor
@@ -61,6 +66,9 @@ public class MatchingFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_matching, container, false);
+        view = inflater.inflate(R.layout.fragment_matching, container, false);
+        matchButton = view.findViewById(R.id.matchButton);
+        denyButton = view.findViewById(R.id.denyButton);
+        return view;
     }
 }

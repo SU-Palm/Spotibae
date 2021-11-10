@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.spotibae">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spotibae"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Activities.User.Settings.ChangeLocation"
+            android:exported="true" />
         <activity
             android:name=".Activities.User.Settings.ChangeName"
             android:exported="true" />
