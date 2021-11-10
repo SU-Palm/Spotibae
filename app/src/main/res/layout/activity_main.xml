@@ -29,8 +29,10 @@
         android:id="@+id/imageView"
         android:layout_width="470dp"
         android:layout_height="314dp"
-        android:src="@drawable/headphones"
-        tools:srcCompat="@drawable/headphones" />
+        android:src="@drawable/spotifygradient"
+        tools:srcCompat="@drawable/spotifygradient" />
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -34,7 +34,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-1dp"
-                app:srcCompat="@drawable/defaultprofile" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/defaultprofile" />
 
             <ImageView
                 android:id="@+id/uploadPicButton"
@@ -104,7 +105,7 @@
                 android:layout_alignTop="@+id/emailButton"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="15dp"
-                android:text="jmbalascio@hotmail.com"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <Button
@@ -129,7 +130,7 @@
                 android:layout_below="@+id/emailButton"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="15dp"
-                android:text="5182004310"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <TextView
@@ -168,7 +169,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:text="Syracuse, NY"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <Button
@@ -196,7 +197,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:text="50 Miles"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <Button
@@ -224,7 +225,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:text="21 - 25"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <Button
@@ -250,7 +251,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:text="Women"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <TextView
@@ -288,7 +289,7 @@
                 android:layout_alignTop="@+id/bioButton"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="15dp"
-                android:text="I love Chance the Rapper"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <Button
@@ -316,7 +317,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:text="Joseph Balascio"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <Button
@@ -342,7 +343,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:text="Male"
+                android:text=""
                 android:theme="@style/ButtonText" />
 
             <TextView

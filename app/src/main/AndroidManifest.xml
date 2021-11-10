@@ -13,6 +13,27 @@
         android:theme="@style/Theme.Spotibae"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activities.User.Settings.ChangeName"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.Settings.ChangeGender"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.Settings.ChangeBio"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.Settings.ChangeGenderMatchPreference"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.Settings.ChangeAgePreference"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.Settings.ChangeDistance"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.Settings.ChangePhoneNumber"
+            android:exported="true" />
+        <activity
             android:name=".Activities.User.UserProfile"
             android:exported="true"
             android:theme="@style/Theme.Settings" />

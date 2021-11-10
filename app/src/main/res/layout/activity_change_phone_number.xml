@@ -6,4 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".Activities.User.Settings.ChangePhoneNumber">
 
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="320dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/spotifyGreen"
+        android:ems="10"
+        android:inputType="phone"
+        android:paddingBottom="25dp"
+        android:hint="Phone Number"
+        android:textColor="@color/spotifyGreen"
+        android:textColorHint="@color/spotifyGreen"
+        android:theme="@style/themeText"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/changePhoneNumber"
+        android:layout_width="327dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:text="Done"
+        android:textColor="@color/backgroundBlack"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,4 +6,96 @@
     android:layout_height="match_parent"
     tools:context=".Activities.User.Settings.ChangeGenderMatchPreference">
 
+    <TextView
+        android:id="@+id/male"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="250dp"
+        android:text="Male"
+        android:textSize="20sp"
+        android:theme="@style/themeText"
+        app:layout_constraintEnd_toStartOf="@+id/maleSwitch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/female"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="250dp"
+        android:text="Female"
+        android:textSize="20sp"
+        android:theme="@style/themeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/male" />
+
+    <TextView
+        android:id="@+id/theyThem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="230dp"
+        android:text="They/Them"
+        android:textSize="20sp"
+        android:theme="@style/themeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/female" />
+
+    <Switch
+        android:id="@+id/maleSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="40dp"
+        android:textColor="@color/spotifyGreen"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/femaleSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:text="Switch"
+        android:textColor="@color/spotifyGreen"
+        android:fontFamily="@font/quicksand_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maleSwitch" />
+
+    <Switch
+        android:id="@+id/theyThemSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="40dp"
+        android:textColor="@color/spotifyGreen"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/femaleSwitch" />
+
+    <Button
+        android:id="@+id/changeGenderPref"
+        android:layout_width="327dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:text="Done"
+        android:textColor="@color/backgroundBlack"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/theyThemSwitch" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
