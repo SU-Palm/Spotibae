@@ -43,4 +43,7 @@
         <item>@drawable/acidrao</item>
     </integer-array>
 
+    <string name="code">Code: %1$s</string>
+    <string name="token">Access Token: %1$s</string>
+
 </resources>

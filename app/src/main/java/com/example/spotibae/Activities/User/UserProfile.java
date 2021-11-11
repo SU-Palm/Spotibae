@@ -34,9 +34,7 @@ import com.example.spotibae.Activities.User.Settings.ChangeName;
 import com.example.spotibae.Activities.User.Settings.ChangePhoneNumber;
 import com.example.spotibae.Activities.Welcome.BaseActivity;
 import com.example.spotibae.Activities.Welcome.WelcomeScreen;
-import com.example.spotibae.Models.User;
 import com.example.spotibae.R;
-import com.example.spotibae.Services.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,21 +42,31 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class UserProfile extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -90,6 +98,11 @@ public class UserProfile extends AppCompatActivity {
     TextView userName;
     TextView userGender;
 
+    // Testing
+    TextView userSpotifyData;
+    Button getToken;
+    Button getCode;
+
     // Uploading image and other stuff
     private Uri filepath;
     private final int PICK_IMAGE_REQUEST = -1;
@@ -97,27 +110,59 @@ public class UserProfile extends AppCompatActivity {
     ImageView profilePic;
     ImageView uploadPicButton;
 
-    // Spotify
+    // Keys for persistent storage
+    private final String EMAIL_KEY = "email";
+    private final String PHONE_NUM_KEY = "phone";
+    private final String LOCATION_KEY = "location";
+    private final String DISTANCE_KEY = "distance";
+    private final String AGE_PREF_KEY = "age";
+    private final String SHOW_ME_KEY = "showMe";
+    private final String BIO_KEY = "bio";
+    private final String NAME_KEY = "name";
+    private final String GENDER_KEY = "gender";
+
+    // Spotify Remote App
     private static final String CLIENT_ID = "04fabd9b23d4470e8c29414d750c8d0f";
     private static final String REDIRECT_URI = "http://com.example.spotibae/callback";
     private SpotifyAppRemote mSpotifyAppRemote;
+
+    // Spotify Auth
+    public static final int AUTH_TOKEN_REQUEST_CODE = 0x10;
+    public static final int AUTH_CODE_REQUEST_CODE = 0x11;
+    private final OkHttpClient mOkHttpClient = new OkHttpClient();
+    private String mAccessToken;
+    private String mAccessCode;
+    private Call mCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        setButtons();
+
+        // Initializing
+        setViews();
+        setListeners();
+
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData");
-        setTextViews();
-        initData();
-
-        profilePic = findViewById(R.id.profilePic);
-        uploadPicButton = findViewById(R.id.uploadPicButton);
-
         storageRef = storage.getReference();
-        //profileRef = storageRef.child("User"); //.child("Joe").child("profilePic.jpg");
 
+        if(savedInstanceState != null) {
+            profileName.setText(savedInstanceState.getString(NAME_KEY));
+            userEmailAddress.setText(savedInstanceState.getString(EMAIL_KEY));
+            userPhoneNumber.setText(savedInstanceState.getString(PHONE_NUM_KEY));
+            userLocation.setText(savedInstanceState.getString(LOCATION_KEY));
+            userDistance.setText(savedInstanceState.getString(DISTANCE_KEY));
+            userAgePref.setText(savedInstanceState.getString(AGE_PREF_KEY));
+            genderPrefText.setText(savedInstanceState.getString(SHOW_ME_KEY));
+            userBio.setText(savedInstanceState.getString(BIO_KEY));
+            userName.setText(savedInstanceState.getString(NAME_KEY));
+            userGender.setText(savedInstanceState.getString(GENDER_KEY));
+        } else {
+            initData();
+        }
+
+        // Callback for picking image in gallery
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -125,16 +170,28 @@ public class UserProfile extends AppCompatActivity {
                         System.out.println("Result Code: " + result.getResultCode() + " ");
                         if(result.getResultCode() == PICK_IMAGE_REQUEST) {
                             filepath = result.getData().getData();
-                            System.out.println("Printing Image Text");
                             try {
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
                                 profilePic.setImageBitmap(Bitmap.createScaledBitmap(getCroppedBitmap(bitmap),  350 ,400, true));
-
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                 byte[] data = baos.toByteArray();
                                 profileRef = storageRef.child("User").child(userEmailAddress.getText().toString()).child("profilePic.png");
                                 UploadTask uploadTask = profileRef.putBytes(data);
+
+                                // Saving image to external storage
+                                /*
+                                String path = Environment.getExternalStorageDirectory().toString();
+                                Bitmap bitmapSave = Bitmap.createScaledBitmap(getCroppedBitmap(bitmap),  350 ,400, true);
+                                OutputStream fOut = null;
+                                Integer counter = 0;
+                                File file = new File(path, "profilePhoto"+counter+".jpg");
+                                fOut = new FileOutputStream(file);
+                                bitmapSave.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                                fOut.flush();
+                                fOut.close();
+                                MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+                                 */
                                 uploadTask.addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception exception) {
@@ -155,33 +212,25 @@ public class UserProfile extends AppCompatActivity {
                         }
                     }
                 });
+    }
 
-        uploadPicButton.setOnClickListener( view -> {
-            chooseImage();
-        });
-
-        verifySpotifyButton = findViewById(R.id.connectSpotify);
-
-        verifySpotifyButton.setOnClickListener(view -> {
-            authenticateSpotify();
-        });
-
-        locationButton = findViewById(R.id.locationButton);
-        locationButton.setOnClickListener( view -> {
-            Intent intent = new Intent(this, ChangeLocation.class);
-            startActivity(intent);
-        });
-
-        passwordResetButton = findViewById(R.id.resetPassword);
-        passwordResetButton.setOnClickListener( view -> {
-            passwordReset();
-        });
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(EMAIL_KEY, userEmailAddress.getText().toString());
+        outState.putString(PHONE_NUM_KEY, userPhoneNumber.getText().toString());
+        outState.putString(LOCATION_KEY, userLocation.getText().toString());
+        outState.putString(DISTANCE_KEY, userDistance.getText().toString());
+        outState.putString(AGE_PREF_KEY, userAgePref.getText().toString());
+        outState.putString(SHOW_ME_KEY, genderPrefText.getText().toString());
+        outState.putString(BIO_KEY, userBio.getText().toString());
+        outState.putString(NAME_KEY, userName.getText().toString());
+        outState.putString(GENDER_KEY, userGender.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 
     public void setImage(String email) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference photoReference= storageReference.child("User").child(email).child("profilePic.png");
+        StorageReference photoReference = storageReference.child("User").child(email).child("profilePic.png");
 
         final long ONE_MEGABYTE = 1024 * 1024;
         photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -226,52 +275,70 @@ public class UserProfile extends AppCompatActivity {
         activityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 
-    public void setButtons() {
-        doneButton = findViewById(R.id.done);
+    public void setListeners() {
         doneButton.setOnClickListener( view -> {
             Intent intent = new Intent(this, BaseActivity.class);
             startActivity(intent);
         });
-        signOutButton = findViewById(R.id.signOut);
-        signOutButton.setOnClickListener(v -> signOut());
-        phoneNumberButton = findViewById(R.id.phoneNumberButton);
+        signOutButton.setOnClickListener(v -> {
+            signOut();
+        });
         phoneNumberButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangePhoneNumber.class);
             startActivity(intent);
         });
-        distanceButton = findViewById(R.id.distanceButton);
         distanceButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeDistance.class);
             startActivity(intent);
         });
-        genderPrefButton = findViewById(R.id.preferenceButton);
         genderPrefButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeGenderMatchPreference.class);
             startActivity(intent);
         });
-        bioButton = findViewById(R.id.bioButton);
         bioButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeBio.class);
             startActivity(intent);
         });
-        genderButton = findViewById(R.id.genderButton);
         genderButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeGender.class);
             startActivity(intent);
         });
-        nameButton = findViewById(R.id.nameButton);
         nameButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeName.class);
             startActivity(intent);
         });
-        agePrefButton = findViewById(R.id.ageButton);
         agePrefButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeAgePreference.class);
             startActivity(intent);
         });
+        uploadPicButton.setOnClickListener( view -> {
+            chooseImage();
+        });
+        verifySpotifyButton.setOnClickListener(view -> {
+            authenticateAppRemoteSpotify();
+        });
+        locationButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, ChangeLocation.class);
+            startActivity(intent);
+        });
+        passwordResetButton.setOnClickListener( view -> {
+            passwordReset();
+        });
+
+
+        // Testing Spotify Auth
+        getToken.setOnClickListener( view -> {
+            onRequestTokenClicked();
+        });
+        getCode.setOnClickListener( view -> {
+            onRequestCodeClicked();
+        });
+
+
     }
 
-    public void setTextViews() {
+    public void setViews() {
+        // TextViews
         profileName = findViewById(R.id.profileName);
         userEmailAddress = findViewById(R.id.userEmailAddress);
         userPhoneNumber = findViewById(R.id.userPhoneNumber);
@@ -282,8 +349,30 @@ public class UserProfile extends AppCompatActivity {
         userBio = findViewById(R.id.userBio);
         userName = findViewById(R.id.userName);
         userGender = findViewById(R.id.userGender);
-    }
 
+        // Buttons
+        nameButton = findViewById(R.id.nameButton);
+        agePrefButton = findViewById(R.id.ageButton);
+        genderButton = findViewById(R.id.genderButton);
+        bioButton = findViewById(R.id.bioButton);
+        genderPrefButton = findViewById(R.id.preferenceButton);
+        distanceButton = findViewById(R.id.distanceButton);
+        phoneNumberButton = findViewById(R.id.phoneNumberButton);
+        signOutButton = findViewById(R.id.signOut);
+        doneButton = findViewById(R.id.done);
+        uploadPicButton = findViewById(R.id.uploadPicButton);
+        verifySpotifyButton = findViewById(R.id.connectSpotify);
+        locationButton = findViewById(R.id.locationButton);
+        passwordResetButton = findViewById(R.id.resetPassword);
+
+        //ImageView
+        profilePic = findViewById(R.id.profilePic);
+
+        // Spotify Testing
+        userSpotifyData = findViewById(R.id.response_text_view);
+        getToken = findViewById(R.id.getToken);
+        getCode = findViewById(R.id.getCode);
+    }
 
     public void initData() {
         FirebaseUser user = mAuth.getCurrentUser();
@@ -346,7 +435,7 @@ public class UserProfile extends AppCompatActivity {
                 });
     }
 
-    public void authenticateSpotify() {
+    public void authenticateAppRemoteSpotify() {
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
@@ -364,6 +453,7 @@ public class UserProfile extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         String uid = user.getUid();
                         mDatabase.child(uid).child("spotifyVerified").setValue(true);
+                        authenticateAuthSpotify();
                     }
 
                     @Override
@@ -373,6 +463,136 @@ public class UserProfile extends AppCompatActivity {
                         // Something went wrong when attempting to connect! Handle errors here
                     }
                 });
-
     }
+
+
+    // Spotify Stuff
+    public void authenticateAuthSpotify() {
+        //onGetUserTopTracks();
+        onGetUserTopArtists();
+    }
+
+    public void onRequestCodeClicked() {
+        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
+        AuthorizationClient.openLoginActivity(this, AUTH_CODE_REQUEST_CODE, request);
+    }
+
+    public void onRequestTokenClicked() {
+        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
+        AuthorizationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request);
+    }
+
+    private void setResponse(final String text) {
+        runOnUiThread(() -> {
+            final TextView responseView = findViewById(R.id.response_text_view);
+            responseView.setText(text);
+        });
+    }
+
+    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
+        return new AuthorizationRequest.Builder(CLIENT_ID, type, REDIRECT_URI)
+                .setShowDialog(false)
+                .setScopes(new String[]{"user-read-email", "user-top-read"})
+                .setCampaign("your-campaign-token")
+                .build();
+    }
+
+    private void updateTokenView() {
+        final TextView tokenView = findViewById(R.id.token_text_view);
+        tokenView.setText(getString(R.string.token, mAccessToken));
+    }
+
+    private void updateCodeView() {
+        final TextView codeView = findViewById(R.id.code_text_view);
+        codeView.setText(getString(R.string.code, mAccessCode));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, data);
+        if (response.getError() != null && !response.getError().isEmpty()) {
+            Log.d("Spotify Auth", "Failed");
+        }
+        if (requestCode == AUTH_TOKEN_REQUEST_CODE) {
+            mAccessToken = response.getAccessToken();
+            updateTokenView();
+        } else if (requestCode == AUTH_CODE_REQUEST_CODE) {
+            mAccessCode = response.getCode();
+            updateCodeView();
+        }
+    }
+
+    public void onGetUserTopTracks() {
+        if (mAccessToken == null) {
+            Log.d("Spotify Auth", "Failed at onGetUserProfileClicked()");
+            return;
+        }
+
+        final Request requestTopTracks = new Request.Builder()
+                .url("https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=2&offset=1")
+                .addHeader("Authorization","Bearer " + mAccessToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(requestTopTracks);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                setResponse("Failed to fetch data: " + e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObject = new JSONObject(response.body().string());
+                    setResponse(jsonObject.toString(3));
+                } catch (JSONException e) {
+                    setResponse("Failed to parse data: " + e);
+                }
+            }
+        });
+    }
+
+    public void onGetUserTopArtists() {
+        if (mAccessToken == null) {
+            Log.d("Spotify Auth", "Failed at onGetUserProfileClicked()");
+            return;
+        }
+
+        final Request requestTopTracks = new Request.Builder()
+                .url("https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=2&offset=1")
+                .addHeader("Authorization","Bearer " + mAccessToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(requestTopTracks);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                setResponse("Failed to fetch data: " + e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObject = new JSONObject(response.body().string());
+                    setResponse(jsonObject.toString(3));
+                } catch (JSONException e) {
+                    setResponse("Failed to parse data: " + e);
+                }
+            }
+        });
+    }
+
+    private void cancelCall() {
+        if (mCall != null) {
+            mCall.cancel();
+        }
+    }
+
 }

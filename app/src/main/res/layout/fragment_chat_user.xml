@@ -60,25 +60,48 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="15dp"
             android:text="10:43Am"
             android:textSize="10sp"
-            android:theme="@style/themeText">
+            android:theme="@style/themeText"></TextView>
 
-        </TextView>
+        <ImageView
+            android:id="@+id/musicPlayerButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@id/messagesButton"
+            android:src="@drawable/ic_headphones"
+            android:text="Button" />
 
-        <TextView
-            android:id="@+id/Divider"
+        <ImageView
+            android:id="@+id/messagesButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_messages"
+            android:text="Button" />
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@id/imageview1"
+            android:layout_height="1.5dp"
+            android:layout_below="@+id/imageview1"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="-5dp"
+            android:layout_marginEnd="15dp"
             android:layout_toRightOf="@id/imageview1"
-            android:text="hello"
-            android:textColor="@color/spotifyGreen">
+            android:background="@color/spotifyGreen" />
 
-        </TextView>
+
     </RelativeLayout>
 </RelativeLayout>

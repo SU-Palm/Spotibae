@@ -4,8 +4,8 @@
     package="com.example.spotibae">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
 
     <application
@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spotibae"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Activities.Messaging.MessagingScreen"
+            android:exported="true"
+            android:theme="@style/Theme.Login" />
         <activity
             android:name=".Activities.User.Settings.ChangeLocation"
             android:exported="true" />
@@ -50,7 +54,8 @@
             android:theme="@style/Theme.Matching" />
         <activity
             android:name=".Activities.Messaging.MusicPlayer"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.Login" />
         <activity
             android:name=".Activities.Welcome.Signup"
             android:exported="true"

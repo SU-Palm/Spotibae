@@ -42,8 +42,8 @@
                 android:layout_width="58dp"
                 android:layout_height="55dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="49dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="49dp"
                 android:background="@drawable/uploadphoto"
                 android:backgroundTintMode="src_atop"
                 app:srcCompat="@drawable/uploadphoto" />
@@ -395,7 +395,6 @@
                 android:layout_below="@+id/resetPassword"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
                 android:layout_marginStart="-5dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="-5dp"
@@ -403,6 +402,69 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/getToken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signOut"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Get Spotify Token"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/getCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/getToken"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Get Spotify Code"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/response_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/getCode"
+                android:layout_marginTop="10dp"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+            <TextView
+                android:id="@+id/token_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/response_text_view"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+            <TextView
+                android:id="@+id/code_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/token_text_view"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
