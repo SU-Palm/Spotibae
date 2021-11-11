@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.spotibae">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
 
     <application
         android:allowBackup="true"
@@ -8,31 +14,62 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Spotibae">
+        android:theme="@style/Theme.Spotibae"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".Activites.Settings.Settings"
+            android:name=".Activities.Messaging.MessagingScreen"
+            android:exported="true"
+            android:theme="@style/Theme.Login" />
+        <activity
+            android:name=".Activities.User.Settings.ChangeLocation"
             android:exported="true" />
         <activity
-            android:name=".Activites.Messaging.MusicPlayer"
+            android:name=".Activities.User.Settings.ChangeName"
             android:exported="true" />
         <activity
-            android:name=".Activites.Messaging.Messages"
+            android:name=".Activities.User.Settings.ChangeGender"
             android:exported="true" />
         <activity
-            android:name=".Activites.Messaging.MessagesList"
+            android:name=".Activities.User.Settings.ChangeBio"
             android:exported="true" />
         <activity
-            android:name=".Activites.Matching.Matching"
+            android:name=".Activities.User.Settings.ChangeGenderMatchPreference"
             android:exported="true" />
         <activity
-            android:name=".Activites.Welcome.Signup"
+            android:name=".Activities.User.Settings.ChangeAgePreference"
             android:exported="true" />
         <activity
-            android:name=".Activites.Welcome.Login"
+            android:name=".Activities.User.Settings.ChangeDistance"
             android:exported="true" />
         <activity
-            android:name=".Activites.Welcome.WelcomeScreen"
-            android:exported="true">
+            android:name=".Activities.User.Settings.ChangePhoneNumber"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.User.UserProfile"
+            android:exported="true"
+            android:theme="@style/Theme.Settings" />
+        <activity
+            android:name=".Activities.Welcome.BaseActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Matching" />
+        <activity
+            android:name=".Activities.Messaging.MusicPlayer"
+            android:exported="true"
+            android:theme="@style/Theme.Login" />
+        <activity
+            android:name=".Activities.Welcome.Signup"
+            android:exported="true"
+            android:parentActivityName=".Activities.Welcome.WelcomeScreen"
+            android:theme="@style/Theme.Login" />
+        <activity
+            android:name=".Activities.Welcome.Login"
+            android:exported="true"
+            android:parentActivityName=".Activities.Welcome.WelcomeScreen"
+            android:theme="@style/Theme.Login" />
+        <activity
+            android:name=".Activities.Welcome.WelcomeScreen"
+            android:exported="true"
+            android:theme="@style/Theme.Spotibae">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

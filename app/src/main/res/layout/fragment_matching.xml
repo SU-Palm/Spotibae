@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Fragments.MatchingFrag">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        tools:context=".Activities.Matching.Matching"
+        android:background="@color/backgroundBlack">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="com.example.spotibae.Fragments.UserFrag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/denyButton"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/denyButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/refreshButton"
+            app:srcCompat="@drawable/denybutton" />
+
+        <ImageView
+            android:id="@+id/refreshButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/matchButton"
+            app:srcCompat="@drawable/refreshbutton" />
+
+        <ImageView
+            android:id="@+id/matchButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="0dp"
+            app:srcCompat="@drawable/acceptbutton" />
+    </RelativeLayout>
+
+</FrameLayout>

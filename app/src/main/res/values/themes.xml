@@ -1,10 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Spotibae" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Spotibae" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/spotifyGreen</item>
+        <item name="colorPrimaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnPrimary">@color/spotifyGreen</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -12,5 +12,83 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:background">@color/backgroundBlack</item>
+    </style>
+
+    <style name="Theme.Login" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Setting back button color. -->
+        <item name="actionBarTheme">@style/MyApp.ActionBarTheme</item>
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/spotifyGreen</item>
+        <item name="colorPrimaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnPrimary">@color/spotifyGreen</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/spotifyGreen</item>
+        <item name="colorSecondaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/backgroundBlack</item>
+    </style>
+
+    <style name="Theme.Matching" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnPrimary">@color/spotifyGreen</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/spotifyGreen</item>
+        <item name="colorSecondaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnSecondary">@color/spotifyGreen</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="MyApp.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- THIS is where you can color the arrow! -->
+        <item name="colorControlNormal">@color/spotifyGreen</item>
+    </style>
+
+    <style name="themeText">
+        <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/spotifyGreen</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="themeSmall">
+        <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/spotifyGreen</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Theme.Settings" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/spotifyGreen</item>
+        <item name="colorPrimaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnPrimary">@color/spotifyGreen</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/backgroundBlack</item>
+    </style>
+
+    <style name="ButtonText">
+        <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>

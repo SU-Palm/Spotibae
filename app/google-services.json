@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "123229002098",
+    "firebase_url": "https://spotibae-default-rtdb.firebaseio.com",
+    "project_id": "spotibae",
+    "storage_bucket": "spotibae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123229002098:android:debd6390de1188ad8525eb",
+        "android_client_info": {
+          "package_name": "com.example.spotibae"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123229002098-de1mrgh5gano3c99h7ojf24tq5i1valj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL2DumxDz40mXm3ER1_wuF1N1gtCCl5FA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123229002098-de1mrgh5gano3c99h7ojf24tq5i1valj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

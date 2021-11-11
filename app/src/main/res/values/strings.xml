@@ -1,3 +1,49 @@
 <resources>
     <string name="app_name">Spotibae</string>
+    <string name="login">Login</string>
+    <string name="SignUp">Sign Up</string>
+    <string name="signup">SignUp</string>
+    <string name="termsAndConditions">By continuing, you agree to accept our Privacy Policy &amp; Terms of Service.</string>
+    <string name="welcomeMessage">Meet your music match!</string>
+    <string name="matched">Matched</string>
+    <string name="denied">Denied</string>
+    <string name="navMatch">Match</string>
+    <string name="navMessages">Messages</string>
+    <string name="navSettings">Settings</string>
+    <string name="totalMatches">Total Matches: %1$d</string>
+    <string name="matches">Matches</string>
+    <string name="report">Report</string>
+    <string name="Chat">Chat</string>
+    <string name="giveNumber">Give Number</string>
+    <string name="unmatch">Unmatch</string>
+    <string name="spotifyVerified">Spotify Verified</string>
+    <string name="spotifyNotVerified">Spotify Not Verified</string>
+    <string name="spotify">Spotify</string>
+    <string name="resetPassword">Reset Password</string>
+    <string name="email">Email</string>
+    <string name="age">Age</string>
+    <string name="password">Password</string>
+    <string name="bio">Bio</string>
+    <string name="saveChanges">Save Changes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navqr">QR</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="no_location">No Location</string>
+    <string name="location_permission_denied">Permission Denied</string>
+
+    <integer-array name="img_id_arr">
+        <item>@drawable/acidrao</item>
+        <item>@drawable/acidrao</item>
+        <item>@drawable/acidrao</item>
+        <item>@drawable/acidrao</item>
+    </integer-array>
+
+    <string name="code">Code: %1$s</string>
+    <string name="token">Access Token: %1$s</string>
+
 </resources>

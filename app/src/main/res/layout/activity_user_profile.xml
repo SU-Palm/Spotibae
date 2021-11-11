@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.User.UserProfile" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="Done"
+                android:textSize="20sp"
+                android:theme="@style/themeSmall" />
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-1dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/defaultprofile" />
+
+            <ImageView
+                android:id="@+id/uploadPicButton"
+                android:layout_width="58dp"
+                android:layout_height="55dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="49dp"
+                android:background="@drawable/uploadphoto"
+                android:backgroundTintMode="src_atop"
+                app:srcCompat="@drawable/uploadphoto" />
+
+            <TextView
+                android:id="@+id/profileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profilePic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-10dp"
+                android:text="Joe"
+                android:textSize="30sp"
+                android:theme="@style/themeText" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/profileName"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:background="@color/spotifyGreen" />
+
+            <TextView
+                android:id="@+id/accountSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profileName"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Account Settings"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/emailButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountSettings"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Email"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/phoneNumberButton"
+                android:layout_alignTop="@+id/emailButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <Button
+                android:id="@+id/phoneNumberButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Phone Number"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <TextView
+                android:id="@+id/discovery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/phoneNumberButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Discovery"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/locationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/discovery"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Location"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/distanceButton"
+                android:layout_alignTop="@+id/locationButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <Button
+                android:id="@+id/distanceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Distance"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ageButton"
+                android:layout_below="@+id/locationButton"
+                android:layout_alignTop="@+id/distanceButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <Button
+                android:id="@+id/ageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distanceButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Age Preference"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userAgePref"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/preferenceButton"
+                android:layout_below="@+id/ageButton"
+                android:layout_alignTop="@+id/ageButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <Button
+                android:id="@+id/preferenceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ageButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Show Me"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/genderPref"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ageButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <TextView
+                android:id="@+id/profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/preferenceButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Profile"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/bioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Bio"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userBio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/nameButton"
+                android:layout_alignTop="@+id/bioButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <Button
+                android:id="@+id/nameButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bioButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Name"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/genderButton"
+                android:layout_below="@+id/nameButton"
+                android:layout_alignTop="@+id/nameButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <Button
+                android:id="@+id/genderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameButton"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Gender"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/userGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:theme="@style/ButtonText" />
+
+            <TextView
+                android:id="@+id/accountManagement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/genderButton"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Account Management"
+                android:textSize="15sp"
+                android:theme="@style/themeSmall" />
+
+            <Button
+                android:id="@+id/connectSpotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accountManagement"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Connect to Spotify"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/resetPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/connectSpotify"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Reset Password"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/signOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resetPassword"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Sign Out"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/getToken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signOut"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Get Spotify Token"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <Button
+                android:id="@+id/getCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/getToken"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="-5dp"
+                android:text="Get Spotify Code"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:theme="@style/themeText" />
+
+            <TextView
+                android:id="@+id/response_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/getCode"
+                android:layout_marginTop="10dp"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+            <TextView
+                android:id="@+id/token_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/response_text_view"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+            <TextView
+                android:id="@+id/code_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/token_text_view"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
