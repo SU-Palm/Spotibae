@@ -34,7 +34,13 @@ import com.example.spotibae.Activities.User.Settings.ChangeName;
 import com.example.spotibae.Activities.User.Settings.ChangePhoneNumber;
 import com.example.spotibae.Activities.Welcome.BaseActivity;
 import com.example.spotibae.Activities.Welcome.WelcomeScreen;
+import com.example.spotibae.Models.Album;
+import com.example.spotibae.Models.Artist;
+import com.example.spotibae.Models.Song;
 import com.example.spotibae.R;
+import com.example.spotibae.Services.Serializers.AlbumDeserializer;
+import com.example.spotibae.Services.Serializers.ArtistDeserializer;
+import com.example.spotibae.Services.Serializers.SongDeserializer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +53,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -60,7 +72,10 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -99,7 +114,8 @@ public class UserProfile extends AppCompatActivity {
     TextView userGender;
 
     // Testing
-    TextView userSpotifyData;
+    TextView userSpotifyData1;
+    TextView userSpotifyData2;
     Button getToken;
     Button getCode;
 
@@ -133,6 +149,8 @@ public class UserProfile extends AppCompatActivity {
     private String mAccessToken;
     private String mAccessCode;
     private Call mCall;
+
+    // Adding Spotify Data
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -369,7 +387,8 @@ public class UserProfile extends AppCompatActivity {
         profilePic = findViewById(R.id.profilePic);
 
         // Spotify Testing
-        userSpotifyData = findViewById(R.id.response_text_view);
+        userSpotifyData1 = findViewById(R.id.response_text_view_1);
+        userSpotifyData2 = findViewById(R.id.response_text_view_2);
         getToken = findViewById(R.id.getToken);
         getCode = findViewById(R.id.getCode);
     }
@@ -453,7 +472,11 @@ public class UserProfile extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         String uid = user.getUid();
                         mDatabase.child(uid).child("spotifyVerified").setValue(true);
-                        authenticateAuthSpotify();
+                        try {
+                            authenticateAuthSpotify();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -467,8 +490,9 @@ public class UserProfile extends AppCompatActivity {
 
 
     // Spotify Stuff
-    public void authenticateAuthSpotify() {
-        //onGetUserTopTracks();
+    public void authenticateAuthSpotify() throws InterruptedException {
+        onGetUserTopTracks();
+        Thread.sleep(100);
         onGetUserTopArtists();
     }
 
@@ -482,9 +506,16 @@ public class UserProfile extends AppCompatActivity {
         AuthorizationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request);
     }
 
-    private void setResponse(final String text) {
+    private void setResponse1(final String text) {
         runOnUiThread(() -> {
-            final TextView responseView = findViewById(R.id.response_text_view);
+            final TextView responseView = findViewById(R.id.response_text_view_1);
+            responseView.setText(text);
+        });
+    }
+
+    private void setResponse2(final String text) {
+        runOnUiThread(() -> {
+            final TextView responseView = findViewById(R.id.response_text_view_2);
             responseView.setText(text);
         });
     }
@@ -523,7 +554,7 @@ public class UserProfile extends AppCompatActivity {
         }
     }
 
-    public void onGetUserTopTracks() {
+    public void onGetUserTopTracks() throws InterruptedException {
         if (mAccessToken == null) {
             Log.d("Spotify Auth", "Failed at onGetUserProfileClicked()");
             return;
@@ -535,28 +566,28 @@ public class UserProfile extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
+        Thread.sleep(500);
         cancelCall();
         mCall = mOkHttpClient.newCall(requestTopTracks);
 
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                setResponse("Failed to fetch data: " + e);
+                setResponse1("Failed to fetch data: " + e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    setResponse(jsonObject.toString(3));
-                } catch (JSONException e) {
-                    setResponse("Failed to parse data: " + e);
-                }
+                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                JsonArray songArray = jsonObject.getAsJsonArray("items");
+                List<Song> songList = createListSongs(songArray);
+                addUserFavoriteSongsToFirebase(songList);
+                setResponse1(songList.toString());
             }
         });
     }
 
-    public void onGetUserTopArtists() {
+    public void onGetUserTopArtists() throws InterruptedException {
         if (mAccessToken == null) {
             Log.d("Spotify Auth", "Failed at onGetUserProfileClicked()");
             return;
@@ -568,23 +599,23 @@ public class UserProfile extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
+        Thread.sleep(500);
         cancelCall();
         mCall = mOkHttpClient.newCall(requestTopTracks);
 
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                setResponse("Failed to fetch data: " + e);
+                setResponse2("Failed to fetch data: " + e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    setResponse(jsonObject.toString(3));
-                } catch (JSONException e) {
-                    setResponse("Failed to parse data: " + e);
-                }
+                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                JsonArray artistArray = jsonObject.getAsJsonArray("items");
+                List<Artist> artistList = createListArtists(artistArray);
+                addUserFavoriteArtistsToFirebase(artistList);
+                setResponse2(artistList.toString());
             }
         });
     }
@@ -595,4 +626,106 @@ public class UserProfile extends AppCompatActivity {
         }
     }
 
+    public void addUserFavoriteSongsToFirebase(List<Song> songs) {
+        Map<String, Map<String, String>> hashHashSongs = new HashMap<String, Map<String, String>>();
+        for(Song song: songs) {
+            Map<String, String> hashSongs = new HashMap<String, String>();
+            hashSongs.put("id", song.id);
+            hashSongs.put("name", song.name);
+            hashSongs.put("href", song.href);
+            hashSongs.put("artistName", song.artistName);
+            hashSongs.put("uri", song.uri);
+            hashHashSongs.put(song.id, hashSongs);
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uId = user.getUid();
+        mDatabase.child(uId).child("favoriteSongs").setValue(hashHashSongs);
+    }
+
+    public void addUserFavoriteArtistsToFirebase(List<Artist> artists) {
+        Map<String, Map<String, String>> hashHashArtists = new HashMap<String, Map<String, String>>();
+        for(Artist artist: artists) {
+            Map<String, String> hashArtists = new HashMap<String, String>();
+            hashArtists.put("id", artist.id);
+            hashArtists.put("name", artist.name);
+            hashArtists.put("genre", artist.genre);
+            hashArtists.put("href", artist.href);
+            hashArtists.put("imageURI", artist.imageURI);
+            hashArtists.put("uri", artist.uri);
+            hashHashArtists.put(artist.id, hashArtists);
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uId = user.getUid();
+        mDatabase.child(uId).child("favoriteArtists").setValue(hashHashArtists);
+    }
+
+    /*
+    public void addUserFavoriteAlbumsToFirebase(List<Album> albums) {
+        Map<String, String> hashAlbums = new HashMap<>();
+        for(Album album: albums) {
+            hashAlbums.put("id", album.id);
+            hashAlbums.put("artistName", album.artistName);
+            hashAlbums.put("artistName", album.artistName);
+            hashAlbums.put("artistName", album.artistName);
+            hashAlbums.put("artistName", album.artistName);
+            hashAlbums.put("artistName", album.artistName);
+            hashAlbums.put("artistName", album.artistName);
+        }
+    }
+     */
+
+
+    // Putting into Service Directory
+    public void createUserSpotifyFavorites() {
+        Map<String, Map<String, String>> listOfSpotify = new HashMap<String, Map<String, String>>();
+
+    }
+
+    public Artist createArtist(JsonElement json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Artist.class, new ArtistDeserializer())
+                .create();
+        Artist artist = gson.fromJson(json, Artist.class);
+        return artist;
+    }
+
+    public Song createSong(JsonElement json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Song.class, new SongDeserializer())
+                .create();
+        Song song = gson.fromJson(json, Song.class);
+        return song;
+    }
+
+    public Album createAlbum(JsonElement json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Album.class, new AlbumDeserializer())
+                .create();
+        Album album = gson.fromJson(json, Album.class);
+        return album;
+    }
+
+    public List<Artist> createListArtists(JsonArray itemArray) {
+        List<Artist> artistList = new ArrayList<>();
+
+        for(int i = 0; i < 2; i++) {
+            JsonObject json = itemArray.get(i).getAsJsonObject();
+            Artist artist = createArtist(json);
+            artistList.add(artist);
+        }
+
+        return artistList;
+    }
+
+    public List<Song> createListSongs(JsonArray itemArray) {
+        List<Song> songList = new ArrayList<>();
+
+        for(int i = 0; i < 2; i++) {
+            JsonObject json = itemArray.get(i).getAsJsonObject();
+            Song song = createSong(json);
+            songList.add(song);
+        }
+
+        return songList;
+    }
 }

@@ -1,20 +1,33 @@
 package com.example.spotibae.Models;
 
-import java.util.List;
-
 public class Album {
-    private int id;
-    String name;
-    int popularity;
-    int releaseDate;
-    int totalTracks;
-    String genres;
-    String label;
-    List<Artist> artists;
-    List<Song> tracks;
-    String type;
-    String uri;
+    public int id;
+    public String artistName;
+    public String name;
+    public String href;
+    public String genre;
+    public String imageURI;
+    public String uri;
+
+    public Album() { }
+
+    public Album(int id, String artistName, String name, String href, String genre, String imageURI, String uri) {
+        this.id = id;
+        this.artistName = artistName;
+        this.name = name;
+        this.href = href;
+        this.genre = genre;
+        this.imageURI = imageURI;
+        this.uri = uri;
+    }
+
+    @Override
+    public String toString() {
+        return "Album: " + "ID: " + id + ", Artist Name: " + artistName + ", Album Name: " + name + ", Href: " + href + ", Genre: " + genre + ", Image URI: " + imageURI + ", URI: " + uri + "\n";
+    }
 }
+
+
 /* Example
 {
   "album_type": "album",

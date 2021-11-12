@@ -434,10 +434,20 @@
                 android:theme="@style/themeText" />
 
             <TextView
-                android:id="@+id/response_text_view"
+                android:id="@+id/response_text_view_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/getCode"
+                android:layout_marginTop="10dp"
+                android:textSize="10sp"
+                android:theme="@style/themeText"
+                tools:text="Line 1\nLine 2\nLine 3" />
+
+            <TextView
+                android:id="@+id/response_text_view_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/response_text_view_1"
                 android:layout_marginTop="10dp"
                 android:textSize="10sp"
                 android:theme="@style/themeText"
@@ -448,7 +458,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/response_text_view"
+                android:layout_below="@+id/response_text_view_2"
                 android:textSize="10sp"
                 android:theme="@style/themeText"
                 tools:text="Line 1\nLine 2\nLine 3" />
@@ -458,8 +468,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/token_text_view"
-                android:layout_marginTop="10dp"
                 android:layout_alignParentBottom="true"
+                android:layout_marginTop="10dp"
                 android:textSize="10sp"
                 android:theme="@style/themeText"
                 tools:text="Line 1\nLine 2\nLine 3" />

@@ -3,7 +3,9 @@ package com.example.spotibae.Models;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User {
     public String firstName;
@@ -20,10 +22,10 @@ public class User {
     public String genderPref;
     public boolean spotifyVerified;
     public String location;
-    public List<Artist> favoriteArtists;
-    public List<Song> favoriteSongs;
-    public List<Album> favoriteAlbums;
-    public List<User> matches;
+    public String favoriteSongs;
+    public String favoriteArtists;
+    public Map<String, Map<String, String>> hashHashArtists;
+    public Map<String, Map<String, String>> hashHashSongs;
 
     public User() { }
 
@@ -42,10 +44,14 @@ public class User {
         this.genderPref = "Not Set";
         this.spotifyVerified = false;
         this.location = "Not Set";
-        this.favoriteArtists = new ArrayList<Artist>();
-        this.favoriteSongs = new ArrayList<Song>();
-        this.favoriteAlbums = new ArrayList<Album>();
-        this.matches = new ArrayList<User>();
+        this.favoriteSongs = "";
+        this.favoriteArtists = "";
+        this.hashHashArtists = new HashMap<String, Map<String, String>>();
+        this.hashHashArtists.put("0", new HashMap<String, String>());
+        this.hashHashArtists.put("1", new HashMap<String, String>());
+        this.hashHashSongs = new HashMap<String, Map<String, String>>();
+        this.hashHashSongs.put("0", new HashMap<String, String>());
+        this.hashHashSongs.put("1", new HashMap<String, String>());
     }
 
     public User(String email, String fullName, String firstName, String lastName, long age, String bio, String gender, String phoneNumber, long distance, long lowestAgePref, long highestAgePref, String genderPref, boolean spotifyVerified, String location) {
@@ -63,10 +69,14 @@ public class User {
         this.genderPref = genderPref;
         this.spotifyVerified = spotifyVerified;
         this.location = location;
-        this.favoriteArtists = new ArrayList<Artist>();
-        this.favoriteSongs = new ArrayList<Song>();
-        this.favoriteAlbums = new ArrayList<Album>();
-        this.matches = new ArrayList<User>();
+        this.favoriteSongs = "";
+        this.favoriteArtists = "";
+        this.hashHashArtists = new HashMap<String, Map<String, String>>();
+        this.hashHashArtists.put("0", new HashMap<String, String>());
+        this.hashHashArtists.put("1", new HashMap<String, String>());
+        this.hashHashSongs = new HashMap<String, Map<String, String>>();
+        this.hashHashSongs.put("0", new HashMap<String, String>());
+        this.hashHashSongs.put("1", new HashMap<String, String>());
     }
 
     @Override
