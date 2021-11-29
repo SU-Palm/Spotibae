@@ -55,7 +55,7 @@
         <activity
             android:name=".Activities.Messaging.MusicPlayer"
             android:exported="true"
-            android:theme="@style/Theme.Login" />
+            android:theme="@style/Theme.Matching" />
         <activity
             android:name=".Activities.Welcome.Signup"
             android:exported="true"

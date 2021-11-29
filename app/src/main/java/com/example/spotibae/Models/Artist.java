@@ -99,10 +99,84 @@ public class Artist {
       "popularity": 68,
       "type": "artist",
       "uri": "spotify:artist:3v0QTRruILayLe5VsaYdvk"
-    }
+    },
+    {
+      "external_urls": {
+        "spotify": "https://open.spotify.com/artist/3v0QTRruILayLe5VsaYdvk"
+      },
+      "followers": {
+        "href": null,
+        "total": 173900
+      },
+      "genres": [
+        "aesthetic rap",
+        "dark trap",
+        "drift phonk"
+      ],
+      "href": "https://api.spotify.com/v1/artists/3v0QTRruILayLe5VsaYdvk",
+      "id": "3v0QTRruILayLe5Vsatvvv",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://i.scdn.co/image/ab67616d0000b2731e340d1480e7bb29a45e3bd7",
+          "width": 640
+        },
+        {
+          "height": 320,
+          "url": "https://i.scdn.co/image/ab6761610000517474ca6577ea876272d6f59225",
+          "width": 320
+        },
+        {
+          "height": 160,
+          "url": "https://i.scdn.co/image/ab6761610000f17874ca6577ea876272d6f59225",
+          "width": 160
+        }
+      ],
+      "name": "Pitbull",
+      "popularity": 68,
+      "type": "artist",
+      "uri": "spotify:artist:3v0QTRruILayLe5VsaYdvk"
+    },
+    {
+      "external_urls": {
+        "spotify": "https://open.spotify.com/artist/3v0QTRruILayLe5VsaYdvk"
+      },
+      "followers": {
+        "href": null,
+        "total": 173900
+      },
+      "genres": [
+        "aesthetic rap",
+        "dark trap",
+        "drift phonk"
+      ],
+      "href": "https://api.spotify.com/v1/artists/3v0QTRruILayLe5VsaYdvk",
+      "id": "3v0QTRruILayLe5VsaYjjq",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://i.scdn.co/image/ab67616d0000b27346f07fa4f28bf824840ddacb",
+          "width": 640
+        },
+        {
+          "height": 320,
+          "url": "https://i.scdn.co/image/ab6761610000517474ca6577ea876272d6f59225",
+          "width": 320
+        },
+        {
+          "height": 160,
+          "url": "https://i.scdn.co/image/ab6761610000f17874ca6577ea876272d6f59225",
+          "width": 160
+        }
+      ],
+      "name": "Brockhampton",
+      "popularity": 68,
+      "type": "artist",
+      "uri": "spotify:artist:3v0QTRruILayLe5VsaYdvk"
+    },
   ],
   "total": 50,
-  "limit": 2,
+  "limit": 4,
   "offset": 1,
   "previous": null,
   "href": "https://api.spotify.com/v1/me/top/artists?limit=2&offset=1",

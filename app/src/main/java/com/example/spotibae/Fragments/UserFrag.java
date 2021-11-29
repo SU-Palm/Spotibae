@@ -29,7 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +56,10 @@ public class UserFrag extends Fragment {
     ImageView denyButton;
     ImageView refreshButton;
     int count = 0;
+    List<String> imageUriList = new ArrayList<>();
+    View leftSide;
+    View rightSide;
+    int picCount = 0;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -106,6 +112,8 @@ public class UserFrag extends Fragment {
         matchButton = view.findViewById(R.id.matchButton);
         denyButton = view.findViewById(R.id.denyButton);
         refreshButton = view.findViewById(R.id.refreshButton);
+        leftSide = view.findViewById(R.id.left);
+        rightSide = view.findViewById(R.id.right);
         setListeners();
         getUsers();
         return view;
@@ -128,28 +136,42 @@ public class UserFrag extends Fragment {
                     users.remove(uId);
                     Log.d("Firebase Users", users.toString());
                     for(Map.Entry<String, HashMap<String, Object>> userList: users.entrySet()) {
+                        List<String> uriList = new ArrayList<>();
                         HashMap<String, Object> userHash = userList.getValue();
-                        userList1.add(new MatchingModel(userList.getKey(), R.drawable.acidrao, userHash.get("firstName").toString() + ", ", userHash.get("age").toString(), userHash.get("bio").toString()));
+
+                        HashMap<String, HashMap<String, String>> favoriteArtistMap = (HashMap<String, HashMap<String, String>>) userHash.get("favoriteArtists");
+                        for(Map.Entry<String, HashMap<String, String>> userList1: favoriteArtistMap.entrySet()) {
+                            HashMap<String, String> userHash1 = userList1.getValue();
+                            String imageUri = userHash1.get("imageURI");
+                            uriList.add(imageUri);
+                        }
+
+                        userList1.add(new MatchingModel(userList.getKey(), uriList, userHash.get("firstName").toString() + ", ", userHash.get("age").toString(), userHash.get("bio").toString()));
                     }
                     initView();
                 }
             }
         });
-        //Log.d("Firebase Users", users.toString());
     }
 
     public void initView() {
         nameText.setText(userList1.get(count).getNameText());
         ageText.setText(userList1.get(count).getAgeText());
         bioText.setText(userList1.get(count).getBioText());
-        getEmailAndSetImage();
+        String imageUri = userList1.get(count).getImageview().get(picCount).trim();
+        String uri = imageUri.toString().substring(25, imageUri.toString().length() - 1);
+        Picasso.get().setLoggingEnabled(true);
+        Picasso.get().load("https://i.scdn.co/image/" + uri).resize(400, 400).into(imageView);
+        //getEmailAndSetImage();
     }
 
     private void setListeners() {
         matchButton.setOnClickListener( view1 -> {
             int size = userList1.size();
             if(count < size - 1 ) {
+                matchUser(count);
                 count += 1;
+                picCount = 0;
                 initView();
             }
         });
@@ -158,9 +180,31 @@ public class UserFrag extends Fragment {
             int size = userList1.size();
             if(count < size - 1 ) {
                 count += 1;
+                picCount = 0;
                 initView();
             }
         });
+
+        rightSide.setOnClickListener( view1 -> {
+            int size = userList1.get(count).getImageview().size();
+            if(picCount < size - 1) {
+                picCount += 1;
+                initView();
+            }
+        });
+
+        leftSide.setOnClickListener( view1 -> {
+            if(picCount > 0) {
+                picCount -= 1;
+                initView();
+            }
+        });
+    }
+
+    private void matchUser(int countMatch) {
+        String userId = userList1.get(countMatch).getFirebaseId();
+        String uId = mAuth.getUid();
+        mDatabase.child(uId).child("matches").child(userId).setValue(true);
     }
 
     private void getEmailAndSetImage() {
@@ -174,29 +218,19 @@ public class UserFrag extends Fragment {
                 else {
                     HashMap<String, Object> user = (HashMap<String, Object>) task.getResult().getValue();
                     String email = user.get("email").toString();
-                    setImage(email);
+                    HashMap<String, HashMap<String, String>> favoriteArtistMap = (HashMap<String, HashMap<String, String>>) user.get("favoriteArtists");
+                    for(Map.Entry<String, HashMap<String, String>> userList1: favoriteArtistMap.entrySet()) {
+                        HashMap<String, String> userHash = userList1.getValue();
+                        String imageUri = userHash.get("imageURI");
+                        imageUriList.add(imageUri);
+                    }
+
+                    String imageUri = imageUriList.get(picCount).trim();
+                    String uri = imageUri.toString().substring(25, imageUri.toString().length() - 1);
+                    Picasso.get().setLoggingEnabled(true);
+                    Picasso.get().load("https://i.scdn.co/image/" + uri).resize(400, 400).into(imageView);
                 }
             }
         });
     }
-
-    public void setImage(String email) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference photoReference= storageReference.child("User").child(email).child("favoriteAlbum.jpeg");
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap,  400 ,400, true));
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-            }
-        });
-    }
-
 }

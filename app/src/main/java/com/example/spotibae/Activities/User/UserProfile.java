@@ -66,9 +66,6 @@ import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -149,8 +146,9 @@ public class UserProfile extends AppCompatActivity {
     private String mAccessToken;
     private String mAccessCode;
     private Call mCall;
+    String testArtistJson;
+    String testSongJson;
 
-    // Adding Spotify Data
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,6 +228,211 @@ public class UserProfile extends AppCompatActivity {
                         }
                     }
                 });
+
+        testArtistJson = "{\n" +
+                "  \"items\": [\n" +
+                "    {\n" +
+                "      \"external_urls\": {\n" +
+                "        \"spotify\": \"https://open.spotify.com/artist/5K4W6rqBFWDnAN6FQUkS6x\"\n" +
+                "      },\n" +
+                "      \"followers\": {\n" +
+                "        \"href\": null,\n" +
+                "        \"total\": 15547857\n" +
+                "      },\n" +
+                "      \"genres\": [\n" +
+                "        \"chicago rap\",\n" +
+                "        \"rap\"\n" +
+                "      ],\n" +
+                "      \"href\": \"https://api.spotify.com/v1/artists/5K4W6rqBFWDnAN6FQUkS6x\",\n" +
+                "      \"id\": \"5K4W6rqBFWDnAN6FQUkS6x\",\n" +
+                "      \"images\": [\n" +
+                "        {\n" +
+                "          \"height\": 640,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000e5eb867008a971fae0f4d913f63a\",\n" +
+                "          \"width\": 640\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 320,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab67616100005174867008a971fae0f4d913f63a\",\n" +
+                "          \"width\": 320\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 160,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000f178867008a971fae0f4d913f63a\",\n" +
+                "          \"width\": 160\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"name\": \"Kanye West\",\n" +
+                "      \"popularity\": 95,\n" +
+                "      \"type\": \"artist\",\n" +
+                "      \"uri\": \"spotify:artist:5K4W6rqBFWDnAN6FQUkS6x\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"external_urls\": {\n" +
+                "        \"spotify\": \"https://open.spotify.com/artist/3v0QTRruILayLe5VsaYdvk\"\n" +
+                "      },\n" +
+                "      \"followers\": {\n" +
+                "        \"href\": null,\n" +
+                "        \"total\": 173900\n" +
+                "      },\n" +
+                "      \"genres\": [\n" +
+                "        \"aesthetic rap\",\n" +
+                "        \"dark trap\",\n" +
+                "        \"drift phonk\"\n" +
+                "      ],\n" +
+                "      \"href\": \"https://api.spotify.com/v1/artists/3v0QTRruILayLe5VsaYdvk\",\n" +
+                "      \"id\": \"3v0QTRruILayLe5VsaYdvk\",\n" +
+                "      \"images\": [\n" +
+                "        {\n" +
+                "          \"height\": 640,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000e5eb74ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 640\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 320,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000517474ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 320\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 160,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000f17874ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 160\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"name\": \"Haarper\",\n" +
+                "      \"popularity\": 68,\n" +
+                "      \"type\": \"artist\",\n" +
+                "      \"uri\": \"spotify:artist:3v0QTRruILayLe5VsaYdvk\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"external_urls\": {\n" +
+                "        \"spotify\": \"https://open.spotify.com/artist/3v0QTRruILayLe5VsaYdvk\"\n" +
+                "      },\n" +
+                "      \"followers\": {\n" +
+                "        \"href\": null,\n" +
+                "        \"total\": 173900\n" +
+                "      },\n" +
+                "      \"genres\": [\n" +
+                "        \"aesthetic rap\",\n" +
+                "        \"dark trap\",\n" +
+                "        \"drift phonk\"\n" +
+                "      ],\n" +
+                "      \"href\": \"https://api.spotify.com/v1/artists/3v0QTRruILayLe5VsaYdvk\",\n" +
+                "      \"id\": \"3v0QTRruILayLe5Vsatvvv\",\n" +
+                "      \"images\": [\n" +
+                "        {\n" +
+                "          \"height\": 640,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab67616d0000b2731e340d1480e7bb29a45e3bd7\",\n" +
+                "          \"width\": 640\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 320,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000517474ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 320\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 160,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000f17874ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 160\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"name\": \"Pitbull\",\n" +
+                "      \"popularity\": 68,\n" +
+                "      \"type\": \"artist\",\n" +
+                "      \"uri\": \"spotify:artist:3v0QTRruILayLe5VsaYdvk\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"external_urls\": {\n" +
+                "        \"spotify\": \"https://open.spotify.com/artist/3v0QTRruILayLe5VsaYdvk\"\n" +
+                "      },\n" +
+                "      \"followers\": {\n" +
+                "        \"href\": null,\n" +
+                "        \"total\": 173900\n" +
+                "      },\n" +
+                "      \"genres\": [\n" +
+                "        \"aesthetic rap\",\n" +
+                "        \"dark trap\",\n" +
+                "        \"drift phonk\"\n" +
+                "      ],\n" +
+                "      \"href\": \"https://api.spotify.com/v1/artists/3v0QTRruILayLe5VsaYdvk\",\n" +
+                "      \"id\": \"3v0QTRruILayLe5VsaYjjq\",\n" +
+                "      \"images\": [\n" +
+                "        {\n" +
+                "          \"height\": 640,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab67616d0000b27346f07fa4f28bf824840ddacb\",\n" +
+                "          \"width\": 640\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 320,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000517474ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 320\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"height\": 160,\n" +
+                "          \"url\": \"https://i.scdn.co/image/ab6761610000f17874ca6577ea876272d6f59225\",\n" +
+                "          \"width\": 160\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"name\": \"Brockhampton\",\n" +
+                "      \"popularity\": 68,\n" +
+                "      \"type\": \"artist\",\n" +
+                "      \"uri\": \"spotify:artist:3v0QTRruILayLe5VsaYdvk\"\n" +
+                "    },\n" +
+                "  ],\n" +
+                "  \"total\": 50,\n" +
+                "  \"limit\": 4,\n" +
+                "  \"offset\": 1,\n" +
+                "  \"previous\": null,\n" +
+                "  \"href\": \"https://api.spotify.com/v1/me/top/artists?limit=2&offset=1\",\n" +
+                "  \"next\": \"https://api.spotify.com/v1/me/top/artists?limit=2&offset=3\"\n" +
+                "}";
+
+        testSongJson = "{\n" +
+                "  \"items\": [\n" +
+                "    {\n" +
+                "      \"artists\": [\n" +
+                "          {\n" +
+                "            \"external_urls\": {\n" +
+                "              \"spotify\": \"https://open.spotify.com/artist/0TnOYISbd1XYRBk9myaseg\"\n" +
+                "            },\n" +
+                "            \"href\": \"https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg\",\n" +
+                "            \"id\": \"0TnOYISbd1XYRBk9myaseg\",\n" +
+                "            \"name\": \"Duckwrth\",\n" +
+                "            \"type\": \"artist\",\n" +
+                "            \"uri\": \"spotify:artist:0TnOYISbd1XYRBk9myaseg\"\n" +
+                "          }\n" +
+                "      ],\n" +
+                "      \"id\": \"0bdNktKwMzf6d4V5BNK1KN\",\n" +
+                "      \"name\": \"Super Bounce\",\n" +
+                "      \"uri\": \"spotify:track:0bdNktKwMzf6d4V5BNK1KN\",\n" +
+                "      \"href\": \"https://api.spotify.com/v1/tracks/0bdNktKwMzf6d4V5BNK1KN\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"artists\": [\n" +
+                "          {\n" +
+                "            \"external_urls\": {\n" +
+                "              \"spotify\": \"https://open.spotify.com/artist/0TnOYISbd1XYRBk9myaseg\"\n" +
+                "            },\n" +
+                "            \"href\": \"https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg\",\n" +
+                "            \"id\": \"0TnOYISbd1XYRBk9myaseg\",\n" +
+                "            \"name\": \"Daniel Caesar\",\n" +
+                "            \"type\": \"artist\",\n" +
+                "            \"uri\": \"spotify:artist:0TnOYISbd1XYRBk9myaseg\"\n" +
+                "          }\n" +
+                "      ],\n" +
+                "      \"id\": \"1boXOL0ua7N2iCOUVI1p9F\",\n" +
+                "      \"name\": \"Japanese Denim\",\n" +
+                "      \"uri\": \"spotify:track:1boXOL0ua7N2iCOUVI1p9F\",\n" +
+                "      \"href\": \"https://api.spotify.com/v1/tracks/1boXOL0ua7N2iCOUVI1p9F\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"total\": 50,\n" +
+                "  \"limit\": 2,\n" +
+                "  \"offset\": 1,\n" +
+                "  \"previous\": null,\n" +
+                "  \"href\": \"https://api.spotify.com/v1/me/top/artists?limit=2&offset=1\",\n" +
+                "  \"next\": \"https://api.spotify.com/v1/me/top/artists?limit=2&offset=3\"\n" +
+                "}";
     }
 
     @Override
@@ -289,7 +492,6 @@ public class UserProfile extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        //startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
         activityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 
@@ -343,7 +545,6 @@ public class UserProfile extends AppCompatActivity {
             passwordReset();
         });
 
-
         // Testing Spotify Auth
         getToken.setOnClickListener( view -> {
             onRequestTokenClicked();
@@ -351,8 +552,6 @@ public class UserProfile extends AppCompatActivity {
         getCode.setOnClickListener( view -> {
             onRequestCodeClicked();
         });
-
-
     }
 
     public void setViews() {
@@ -492,7 +691,7 @@ public class UserProfile extends AppCompatActivity {
     // Spotify Stuff
     public void authenticateAuthSpotify() throws InterruptedException {
         onGetUserTopTracks();
-        Thread.sleep(100);
+        Thread.sleep(500);
         onGetUserTopArtists();
     }
 
@@ -566,7 +765,6 @@ public class UserProfile extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        Thread.sleep(500);
         cancelCall();
         mCall = mOkHttpClient.newCall(requestTopTracks);
 
@@ -578,7 +776,9 @@ public class UserProfile extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                //JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                System.out.println("Printing test json" + testSongJson);
+                JsonObject jsonObject = new JsonParser().parse(testSongJson).getAsJsonObject();
                 JsonArray songArray = jsonObject.getAsJsonArray("items");
                 List<Song> songList = createListSongs(songArray);
                 addUserFavoriteSongsToFirebase(songList);
@@ -611,7 +811,9 @@ public class UserProfile extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                // JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                System.out.println("Printing test json" + testArtistJson);
+                JsonObject jsonObject = new JsonParser().parse(testArtistJson).getAsJsonObject();
                 JsonArray artistArray = jsonObject.getAsJsonArray("items");
                 List<Artist> artistList = createListArtists(artistArray);
                 addUserFavoriteArtistsToFirebase(artistList);
@@ -659,22 +861,6 @@ public class UserProfile extends AppCompatActivity {
         mDatabase.child(uId).child("favoriteArtists").setValue(hashHashArtists);
     }
 
-    /*
-    public void addUserFavoriteAlbumsToFirebase(List<Album> albums) {
-        Map<String, String> hashAlbums = new HashMap<>();
-        for(Album album: albums) {
-            hashAlbums.put("id", album.id);
-            hashAlbums.put("artistName", album.artistName);
-            hashAlbums.put("artistName", album.artistName);
-            hashAlbums.put("artistName", album.artistName);
-            hashAlbums.put("artistName", album.artistName);
-            hashAlbums.put("artistName", album.artistName);
-            hashAlbums.put("artistName", album.artistName);
-        }
-    }
-     */
-
-
     // Putting into Service Directory
     public void createUserSpotifyFavorites() {
         Map<String, Map<String, String>> listOfSpotify = new HashMap<String, Map<String, String>>();
@@ -708,12 +894,11 @@ public class UserProfile extends AppCompatActivity {
     public List<Artist> createListArtists(JsonArray itemArray) {
         List<Artist> artistList = new ArrayList<>();
 
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 4; i++) {
             JsonObject json = itemArray.get(i).getAsJsonObject();
             Artist artist = createArtist(json);
             artistList.add(artist);
         }
-
         return artistList;
     }
 
@@ -725,7 +910,6 @@ public class UserProfile extends AppCompatActivity {
             Song song = createSong(json);
             songList.add(song);
         }
-
         return songList;
     }
 }

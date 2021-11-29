@@ -2,24 +2,29 @@ package com.example.spotibae.Models;
 
 public class ModelClass {
 
-    private int imageview;
+    private String firebaseID;
+    private String email;
     private String textview1;
     private String textview2;
     private String textview3;
     //new code
     private String divider;
 
-    public ModelClass(int imageview, String textview1, String textview2, String textview3, String divider)
-    {
-        this.imageview=imageview;
+    public ModelClass(String firebaseID, String email, String textview1, String textview2, String textview3, String divider) {
+        this.firebaseID=firebaseID;
+        this.email = email;
         this.textview1=textview1;
         this.textview2=textview2;
         this.textview3=textview3;
         this.divider=divider;
     }
 
-    public int getImageview() {
-        return imageview;
+    public String getFirebaseId() {
+        return firebaseID;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getTextview1() {

@@ -1,15 +1,17 @@
 package com.example.spotibae.Models.Setters;
 
+import java.util.List;
+
 public class MatchingModel {
     String nameText;
     String ageText;
     String bioText;
-    int imageview;
+    List<String> uriList;
     String firebaseID;
 
-    public MatchingModel(String firebaseID, int imageview, String nameText, String ageText, String bioText) {
+    public MatchingModel(String firebaseID, List<String> uriList, String nameText, String ageText, String bioText) {
         this.firebaseID = firebaseID;
-        this.imageview = imageview;
+        this.uriList = uriList;
         this.nameText = nameText;
         this.ageText = ageText;
         this.bioText = bioText;
@@ -17,8 +19,8 @@ public class MatchingModel {
 
     public String getFirebaseId() { return firebaseID; }
 
-    public int getImageview() {
-        return imageview;
+    public List<String> getImageview() {
+        return uriList;
     }
 
     public String getNameText() {

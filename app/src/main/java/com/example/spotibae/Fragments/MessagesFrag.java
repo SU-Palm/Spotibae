@@ -2,10 +2,12 @@ package com.example.spotibae.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +15,20 @@ import android.view.ViewGroup;
 import com.example.spotibae.Adapter.Adapter;
 import com.example.spotibae.Models.ModelClass;
 import com.example.spotibae.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +42,12 @@ public class MessagesFrag extends Fragment {
     List<ModelClass> userList;
     Adapter adapter;
     View view;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("UserData");
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef;
+    StorageReference profileRef;
+    List<String> matchList = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,15 +90,6 @@ public class MessagesFrag extends Fragment {
     }
 
     private void initRecyclerView() {
-        /*
-        mrecyclerView= view.findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        mrecyclerView.setLayoutManager(layoutManager);
-        adapter=new Adapter(userList);
-        mrecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-         */
         mrecyclerView = view.findViewById(R.id.recyclerView);
         mrecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -88,40 +98,53 @@ public class MessagesFrag extends Fragment {
         mrecyclerView.setAdapter(new Adapter(userList));
     }
 
-    private void initData() {
+    private void initData() throws InterruptedException {
         userList = new ArrayList<>();
+        getMatches();
+    }
 
-        userList.add(new ModelClass(R.drawable.gi,"Anjali","How are you?","10:45 am","_______________________________________"));
+    public void getMatches() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uId = user.getUid();
 
-        userList.add(new ModelClass(R.drawable.bo,"Brijesh","I am fine","15:08 pm","_______________________________________"));
+        mDatabase.child(uId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase User", String.valueOf(task.getResult().getValue()));
+                    HashMap<String, Object> user = (HashMap<String, Object>) task.getResult().getValue();
+                    HashMap<String, Object> matchesUsers = (HashMap<String, Object>) user.get("matches");
+                    for(Map.Entry<String, Object> userList1: matchesUsers.entrySet()) {
+                        String firebaseUid = userList1.getKey();
+                        matchList.add(firebaseUid);
+                    }
+                    for(String firebaseID :matchList) {
+                        getMatchesInfo(firebaseID);
+                    }
 
-        userList.add(new ModelClass(R.drawable.boy,"Sam","You Know?","1:02 am","_______________________________________"));
+                }
+            }
+        });
+    }
 
-        userList.add(new ModelClass(R.drawable.girl,"Divya","How are you?","12:55 pm","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.gi,"Simran","This is Easy","13:50 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.boy,"Karan","I am Don","1:08 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.bo,"Sameer","You Know this?","4:02 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.girl,"Baby","How ?","11:55 pm","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.gi,"Anjali","How are you?","10:45 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.bo,"Brijesh","I am fine","15:08 pm","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.boy,"Sam","You Know?","1:02 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.girl,"Divya","How are you?","12:55 pm","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.gi,"Simran","This is Easy","13:50 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.boy,"Karan","I am Don","1:08 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.bo,"Sameer","You Know this?","4:02 am","_______________________________________"));
-
-        userList.add(new ModelClass(R.drawable.girl,"Baby","How ?","11:55 pm","_______________________________________"));
+    public void getMatchesInfo(String id) {
+        mDatabase.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase User", String.valueOf(task.getResult().getValue()));
+                    HashMap<String, Object> user = (HashMap<String, Object>) task.getResult().getValue();
+                    userList.add(new ModelClass(id, user.get("email").toString(), user.get("firstName").toString(), "How ?","11:55 pm","_______________________________________"));
+                }
+                initRecyclerView();
+            }
+        });
     }
 
     @Override
@@ -129,8 +152,11 @@ public class MessagesFrag extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_messages, container, false);
-        initData();
-        initRecyclerView();
+        try {
+            initData();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 }
