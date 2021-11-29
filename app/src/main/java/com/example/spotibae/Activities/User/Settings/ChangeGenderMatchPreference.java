@@ -18,6 +18,10 @@ public class ChangeGenderMatchPreference extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     Button doneButton;
+    Button maleButton;
+    Button femaleButton;
+    Button theyThemButton;
+    String genderSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +31,20 @@ public class ChangeGenderMatchPreference extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData");
         String uid = mAuth.getUid();
 
-        doneButton = findViewById(R.id.changeGenderPref);
-        Switch maleSwitch = findViewById(R.id.maleSwitch);
-        Switch femaleSwitch = findViewById(R.id.femaleSwitch);
-        Switch theyThemSwitch = findViewById(R.id.theyThemSwitch);
+        doneButton = findViewById(R.id.changeGender);
+        maleButton = findViewById(R.id.buttonMale);
+        femaleButton = findViewById(R.id.buttonFemale);
+        theyThemButton = findViewById(R.id.buttonTheyThem);
 
-        maleSwitch.setOnClickListener( view -> {
+        maleButton.setOnClickListener(view -> {
             mDatabase.child(uid).child("genderPref").setValue("Male");
         });
 
-        femaleSwitch.setOnClickListener( view -> {
+        femaleButton.setOnClickListener(view -> {
             mDatabase.child(uid).child("genderPref").setValue("Female");
         });
 
-        theyThemSwitch.setOnClickListener( view -> {
+        theyThemButton.setOnClickListener(view -> {
             mDatabase.child(uid).child("genderPref").setValue("They/Them");
         });
 

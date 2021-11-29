@@ -19,7 +19,7 @@
         <activity
             android:name=".Activities.Messaging.MessagingScreen"
             android:exported="true"
-            android:theme="@style/Theme.Login" />
+            android:theme="@style/Theme.Matching" />
         <activity
             android:name=".Activities.User.Settings.ChangeLocation"
             android:exported="true" />

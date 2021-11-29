@@ -49,8 +49,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             public void onMessages(int p) {
                 Intent intent = new Intent(view.getContext(), MessagingScreen.class);
                 intent.putExtra("PROFILE_PIC_EMAIL", userList.get(p).getEmail());
-                intent.putExtra("USER_FIREBASE_ID", userList.get(p).getFirebaseId());
-                intent.putExtra("USER_NAME", userList.get(p).getTextview1());
+                intent.putExtra("receiveruid", userList.get(p).getFirebaseId());
+                intent.putExtra("name", userList.get(p).getTextview1());
                 view.getContext().startActivity(intent);
             }
 

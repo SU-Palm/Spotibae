@@ -33,7 +33,6 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 import com.squareup.picasso.Picasso;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -63,6 +62,7 @@ public class MusicPlayer extends AppCompatActivity {
     public int i = 0;
     public boolean bothInRoom = true;
     public boolean oneInRoom = true;
+    public Track spotifyTrack;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -153,15 +153,13 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     private void playSong() {
-        String string = userFirebaseId + mAuth.getUid();
-        string = createUniqueRoomId(string);
+        String string = mAuth.getUid() + userFirebaseId;
         mSpotifyAppRemote.getPlayerApi().resume();
         mDatabase.child(string).child("isPlaying").setValue(true);
     }
 
     private void pauseSong() {
-        String string = userFirebaseId + mAuth.getUid();
-        string = createUniqueRoomId(string);
+        String string = mAuth.getUid() + userFirebaseId;
         mSpotifyAppRemote.getPlayerApi().pause();
         mDatabase.child(string).child("isPlaying").setValue(false);
     }
@@ -232,7 +230,7 @@ public class MusicPlayer extends AppCompatActivity {
                         Log.d("MainActivity", "Connected! Yay!");
                         // Now you can start interacting with App Remote
                         getCurrentSong();
-                        setFireBaseValueListener();
+                        setFireBaseValueListenerOther();
                     }
 
                     @Override
@@ -253,7 +251,8 @@ public class MusicPlayer extends AppCompatActivity {
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         setMusicPlayer(track, time);
-                        updateRoom(track);
+                        spotifyTrack = track;
+                        updateMyRoom(track);
                     }
                 });
     }
@@ -277,17 +276,8 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkIfRoomExists();
-        authenticateAppRemoteSpotify();
-        // new Task().execute(songDuration);
-    }
-
-    private void setFireBaseValueListener() {
+    private void setFireBaseValueListenerOther() {
         String string = userFirebaseId + mAuth.getUid();
-        string = createUniqueRoomId(string);
 
         DatabaseReference mSearchedLocationReference = FirebaseDatabase.getInstance().getReference("RoomData").child(string).child("songPlayUri");
         mSearchedLocationReferenceListener = mSearchedLocationReference.addValueEventListener(new ValueEventListener() {
@@ -296,6 +286,7 @@ public class MusicPlayer extends AppCompatActivity {
                 String val = dataSnapshot.getValue().toString();
                 Log.d("Locations updated", "location: " + val);
                 mSpotifyAppRemote.getPlayerApi().play(val);
+                // mSpotifyAppRemote.getPlayerApi().play(val);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -304,15 +295,27 @@ public class MusicPlayer extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+    private void setFireBaseValueListenerMine() {
+        String string = mAuth.getUid() + userFirebaseId;
+
+        DatabaseReference mSearchedLocationReference = FirebaseDatabase.getInstance().getReference("RoomData").child(string).child("songPlayUri");
+        mSearchedLocationReferenceListener = mSearchedLocationReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String val = dataSnapshot.getValue().toString();
+                Log.d("Locations updated", "location: " + val);
+                mSpotifyAppRemote.getPlayerApi().play(val);
+                // mSpotifyAppRemote.getPlayerApi().play(val);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    public void checkIfRoomExists() {
-        String string = userFirebaseId + mAuth.getUid();
-        string = createUniqueRoomId(string);
+    public void checkIfMyRoomExists() {
+        String string = mAuth.getUid() + userFirebaseId;
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference roomRef = rootRef.child("RoomData").child(string);
         ValueEventListener eventListener = new ValueEventListener() {
@@ -320,9 +323,7 @@ public class MusicPlayer extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
                     //create new user
-                    initializeRoom();
-                } else {
-                    getRoom();
+                    initializeMyRoom();
                 }
             }
 
@@ -334,17 +335,56 @@ public class MusicPlayer extends AppCompatActivity {
         roomRef.addListenerForSingleValueEvent(eventListener);
     }
 
-    public void updateRoom(Track track) {
+    public void checkIfOtherRoomExists() {
         String string = userFirebaseId + mAuth.getUid();
-        string = createUniqueRoomId(string);
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference roomRef = rootRef.child("RoomData").child(string);
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()) {
+                    //create new user
+                    initializeOtherRoom();
+                } else {
+                    HashMap<String, Object> room = (HashMap<String, Object>)dataSnapshot.getValue();
+                    boolean checker = (boolean)room.get("isPlaying");
+                    if(checker) {
+                        mSpotifyAppRemote.getPlayerApi().play(room.get("songPlayUri").toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("TAG", databaseError.getMessage()); //Don't ignore errors!
+            }
+        };
+        roomRef.addListenerForSingleValueEvent(eventListener);
+    }
+
+    public void updateMyRoom(Track track) {
+        String string = mAuth.getUid() + userFirebaseId;
         mDatabase.child(string).child("songPlayUri").setValue(track.uri);
     }
 
-    public void getRoom() {
-
+    public void updateOtherRoom(Track track) {
+        String string = userFirebaseId + mAuth.getUid();
+        mDatabase.child(string).child("songPlayUri").setValue(track.uri);
     }
 
-    public void initializeRoom() {
+    public void initializeMyRoom() {
+        Map<String, Object> hashRoom = new HashMap<String, Object>();
+        long songDur = 0;
+        hashRoom.put("isPlaying", false);
+        hashRoom.put("songPlayUri", "");
+        hashRoom.put("oneInRoom", true);
+        hashRoom.put("bothInRoom", false);
+
+        String string = mAuth.getUid() + userFirebaseId;
+        mDatabase.child(string).setValue(hashRoom);
+    }
+
+    public void initializeOtherRoom() {
         Map<String, Object> hashRoom = new HashMap<String, Object>();
         long songDur = 0;
         hashRoom.put("isPlaying", false);
@@ -353,7 +393,6 @@ public class MusicPlayer extends AppCompatActivity {
         hashRoom.put("bothInRoom", false);
 
         String string = userFirebaseId + mAuth.getUid();
-        string = createUniqueRoomId(string);
         mDatabase.child(string).setValue(hashRoom);
     }
 
@@ -401,5 +440,19 @@ public class MusicPlayer extends AppCompatActivity {
         for (Character c : tempArray)
             sb.append(c.charValue());
         return sb.toString();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkIfMyRoomExists();
+        authenticateAppRemoteSpotify();
+        // new Task().execute(songDuration);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 }

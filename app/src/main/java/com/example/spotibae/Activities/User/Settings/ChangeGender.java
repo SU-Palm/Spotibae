@@ -17,7 +17,10 @@ public class ChangeGender extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     Button doneButton;
-    EditText gender;
+    Button maleButton;
+    Button femaleButton;
+    Button theyThemButton;
+    String genderSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +31,27 @@ public class ChangeGender extends AppCompatActivity {
         String uid = mAuth.getUid();
 
         doneButton = findViewById(R.id.changeGender);
-        gender = findViewById(R.id.editTextGender);
+        maleButton = findViewById(R.id.buttonMale);
+        femaleButton = findViewById(R.id.buttonFemale);
+        theyThemButton = findViewById(R.id.buttonTheyThem);
         doneButton.setOnClickListener( view -> {
-            String genderText = gender.getText().toString();
-            if(genderText.isEmpty()) {
+            if(genderSelected.isEmpty() || genderSelected == null) {
                 Intent intent = new Intent(this, UserProfile.class);
                 startActivity(intent);
             } else {
-                changeGender(genderText, uid);
-
+                changeGender(genderSelected, uid);
                 Intent intent = new Intent(this, UserProfile.class);
                 startActivity(intent);
             }
+        });
+        maleButton.setOnClickListener(view -> {
+            genderSelected = maleButton.getText().toString();
+        });
+        femaleButton.setOnClickListener(view -> {
+            genderSelected = femaleButton.getText().toString();
+        });
+        theyThemButton.setOnClickListener(view -> {
+            genderSelected = theyThemButton.getText().toString();
         });
     }
 
