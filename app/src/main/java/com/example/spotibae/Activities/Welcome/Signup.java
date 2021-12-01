@@ -68,9 +68,13 @@ public class Signup extends AppCompatActivity {
 
                                             //    progressbar GONE
                                             // signUp_progress.setVisibility(View.GONE);
-
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            String uId = user.getUid();
+                                            // FirebaseDatabase.getInstance().getReference("UserData").child(uId).child("matches").child(" ").setValue(true);
+                                            FirebaseDatabase.getInstance().getReference("UserData").child(uId).child("firstLogin").setValue(true);
                                             Toast.makeText(Signup.this, "Successful Registered", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(Signup.this, BaseActivity.class);
+                                            intent.putExtra("FRAGMENT_SELECTED", "Dashboard");
                                             startActivity(intent);
                                             finish();
                                         }

@@ -133,20 +133,38 @@ public class UserFrag extends Fragment {
                 else {
                     Log.d("Firebase Users", String.valueOf(task.getResult().getValue()));
                     users = (HashMap<String, HashMap<String, Object>>) task.getResult().getValue();
+                    HashMap<String, Object> myUser = (HashMap<String, Object>) users.get(uId);
+                    HashMap<String, Object> myUserMatches = (HashMap<String, Object>) myUser.get("matches");
                     users.remove(uId);
                     Log.d("Firebase Users", users.toString());
+                    if(myUserMatches == null) {
+
+                    } else {
+                        for(Map.Entry<String, Object> entryMap: myUserMatches.entrySet()) {
+                            users.remove(entryMap.getKey());
+                        }
+                    }
+
                     for(Map.Entry<String, HashMap<String, Object>> userList: users.entrySet()) {
                         List<String> uriList = new ArrayList<>();
                         HashMap<String, Object> userHash = userList.getValue();
-
-                        HashMap<String, HashMap<String, String>> favoriteArtistMap = (HashMap<String, HashMap<String, String>>) userHash.get("favoriteArtists");
-                        for(Map.Entry<String, HashMap<String, String>> userList1: favoriteArtistMap.entrySet()) {
-                            HashMap<String, String> userHash1 = userList1.getValue();
-                            String imageUri = userHash1.get("imageURI");
-                            uriList.add(imageUri);
+                        boolean userSpotifyVerified = Boolean.parseBoolean(userHash.get("spotifyVerified").toString());
+                        if(userSpotifyVerified) {
+                            if(userHash.get("gender").toString().equals(myUser.get("genderPref").toString())
+                                    && (myUser.get("gender").toString().equals(userHash.get("genderPref").toString()))
+                                    && (Integer.parseInt(userHash.get("lowestAgePref").toString()) <=  Integer.parseInt(myUser.get("age").toString()))
+                                    && (Integer.parseInt(userHash.get("highestAgePref").toString()) >=  Integer.parseInt(myUser.get("age").toString()))
+                                    && (Integer.parseInt(myUser.get("highestAgePref").toString()) >=  Integer.parseInt(userHash.get("age").toString()))
+                                    && (Integer.parseInt(myUser.get("lowestAgePref").toString()) <=  Integer.parseInt(userHash.get("age").toString()))) {
+                                HashMap<String, HashMap<String, String>> favoriteArtistMap = (HashMap<String, HashMap<String, String>>) userHash.get("favoriteArtists");
+                                for(Map.Entry<String, HashMap<String, String>> userList1: favoriteArtistMap.entrySet()) {
+                                    HashMap<String, String> userHash1 = userList1.getValue();
+                                    String imageUri = userHash1.get("imageURI");
+                                    uriList.add(imageUri);
+                                }
+                                userList1.add(new MatchingModel(userList.getKey(), uriList, userHash.get("firstName").toString() + ", ", userHash.get("age").toString(), userHash.get("bio").toString()));
+                            }
                         }
-
-                        userList1.add(new MatchingModel(userList.getKey(), uriList, userHash.get("firstName").toString() + ", ", userHash.get("age").toString(), userHash.get("bio").toString()));
                     }
                     initView();
                 }
@@ -155,20 +173,27 @@ public class UserFrag extends Fragment {
     }
 
     public void initView() {
-        nameText.setText(userList1.get(count).getNameText());
-        ageText.setText(userList1.get(count).getAgeText());
-        bioText.setText(userList1.get(count).getBioText());
-        String imageUri = userList1.get(count).getImageview().get(picCount).trim();
-        String uri = imageUri.toString().substring(25, imageUri.toString().length() - 1);
-        Picasso.get().setLoggingEnabled(true);
-        Picasso.get().load("https://i.scdn.co/image/" + uri).resize(400, 400).into(imageView);
-        //getEmailAndSetImage();
+        int size = userList1.size();
+        if(userList1.isEmpty() || size == count) {
+            nameText.setText("No More Users To Match With");
+            ageText.setText("");
+            bioText.setText("");
+            Picasso.get().load("https://img.buzzfeed.com/buzzfeed-static/static/2016-05/10/12/enhanced/webdr06/anigif_enhanced-12275-1462899229-2.gif?output-format=mp4").resize(400, 400).into(imageView);
+        } else {
+            nameText.setText(userList1.get(count).getNameText());
+            ageText.setText(userList1.get(count).getAgeText());
+            bioText.setText(userList1.get(count).getBioText());
+            String imageUri = userList1.get(count).getImageview().get(picCount).trim();
+            String uri = imageUri.toString().substring(25, imageUri.toString().length() - 1);
+            Picasso.get().setLoggingEnabled(true);
+            Picasso.get().load("https://i.scdn.co/image/" + uri).resize(400, 400).into(imageView);
+        }
     }
 
     private void setListeners() {
         matchButton.setOnClickListener( view1 -> {
             int size = userList1.size();
-            if(count < size - 1 ) {
+            if(count <= size - 1 ) {
                 matchUser(count);
                 count += 1;
                 picCount = 0;
@@ -178,7 +203,7 @@ public class UserFrag extends Fragment {
 
         denyButton.setOnClickListener( view1 -> {
             int size = userList1.size();
-            if(count < size - 1 ) {
+            if(count <= size - 1 ) {
                 count += 1;
                 picCount = 0;
                 initView();

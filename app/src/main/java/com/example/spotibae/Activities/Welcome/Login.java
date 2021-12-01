@@ -66,6 +66,7 @@ public class Login extends AppCompatActivity {
 
     private void login() {
         Intent intent = new Intent(this, BaseActivity.class);
+        intent.putExtra("FRAGMENT_SELECTED", "Dashboard");
         startActivity(intent);
     }
 

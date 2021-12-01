@@ -1,33 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.User.Settings.ChangeDistance">
 
-    <EditText
-        android:id="@+id/editTextDistance"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/spotifyGreen"
-        android:ems="10"
-        android:inputType="number"
-        android:paddingBottom="25dp"
-        android:hint="Distance"
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/back_button"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="279dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Distance"
+        android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/spotifyGreen"
-        android:textColorHint="@color/spotifyGreen"
-        android:theme="@style/themeText"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton"/>
+
+    <TextView
+        android:id="@+id/totalDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/spotifyGreen"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender"/>
+
+    <SeekBar
+        android:id="@+id/changeDistanceSeekBar"
+        android:layout_width="370dp"
+        android:layout_height="19dp"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="258dp"
+        android:progressBackgroundTint="@color/spotifyGreen"
+        android:progressTint="@color/green_dark"
+        android:thumbTint="@color/spotifyGreen"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalDistance"/>
 
     <Button
         android:id="@+id/changeDistance"
-        android:layout_width="327dp"
-        android:layout_height="50dp"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
         android:text="Done"
@@ -35,6 +68,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDistance" />
+        app:layout_constraintTop_toBottomOf="@+id/changeDistanceSeekBar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

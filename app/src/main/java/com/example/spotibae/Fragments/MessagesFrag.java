@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.spotibae.Adapter.Adapter;
 import com.example.spotibae.Models.ModelClass;
@@ -48,6 +49,7 @@ public class MessagesFrag extends Fragment {
     StorageReference storageRef;
     StorageReference profileRef;
     List<String> matchList = new ArrayList<>();
+    TextView totalMatches;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -117,14 +119,20 @@ public class MessagesFrag extends Fragment {
                     Log.d("firebase User", String.valueOf(task.getResult().getValue()));
                     HashMap<String, Object> user = (HashMap<String, Object>) task.getResult().getValue();
                     HashMap<String, Object> matchesUsers = (HashMap<String, Object>) user.get("matches");
-                    for(Map.Entry<String, Object> userList1: matchesUsers.entrySet()) {
-                        String firebaseUid = userList1.getKey();
-                        matchList.add(firebaseUid);
-                    }
-                    for(String firebaseID :matchList) {
-                        getMatchesInfo(firebaseID);
-                    }
 
+                    if(matchesUsers== null) {
+
+                    } else {
+                        for(Map.Entry<String, Object> userList1: matchesUsers.entrySet()) {
+                            String firebaseUid = userList1.getKey();
+                            matchList.add(firebaseUid);
+                        }
+                        for(String firebaseID :matchList) {
+                            getMatchesInfo(firebaseID);
+                        }
+                    }
+                    totalMatches = view.findViewById(R.id.totalMatches);
+                    totalMatches.setText(view.getResources().getString(R.string.totalMatches, matchList.size()));
                 }
             }
         });

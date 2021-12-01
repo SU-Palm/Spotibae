@@ -3,6 +3,7 @@ package com.example.spotibae.Activities.Messaging;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.spotibae.Activities.User.UserProfile;
+import com.example.spotibae.Activities.Welcome.BaseActivity;
 import com.example.spotibae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,6 +66,7 @@ public class MusicPlayer extends AppCompatActivity {
     public boolean bothInRoom = true;
     public boolean oneInRoom = true;
     public Track spotifyTrack;
+    ImageView backButton;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -142,6 +146,12 @@ public class MusicPlayer extends AppCompatActivity {
         skipBackwardButton.setOnClickListener( view -> {
             skipBackward();
         });
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("FRAGMENT_SELECTED", "Matches");
+            startActivity(intent);
+        });
     }
 
     private void skipBackward() {
@@ -174,6 +184,7 @@ public class MusicPlayer extends AppCompatActivity {
         skipBackwardButton = findViewById(R.id.skip_back_button);
         userProfilePic = findViewById(R.id.profilePic);
         userNameText = findViewById(R.id.userName);
+        backButton = findViewById(R.id.backButton);
     }
 
     public void setImage(String email) {
@@ -445,6 +456,7 @@ public class MusicPlayer extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        checkIfOtherRoomExists();
         checkIfMyRoomExists();
         authenticateAppRemoteSpotify();
         // new Task().execute(songDuration);

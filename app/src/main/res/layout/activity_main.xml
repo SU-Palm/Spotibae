@@ -29,9 +29,8 @@
         android:id="@+id/imageView"
         android:layout_width="470dp"
         android:layout_height="314dp"
-        android:src="@drawable/spotifygradient"
-        tools:srcCompat="@drawable/spotifygradient" />
-
+        android:src="@drawable/spotifylogo"
+        tools:srcCompat="@drawable/spotifylogo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

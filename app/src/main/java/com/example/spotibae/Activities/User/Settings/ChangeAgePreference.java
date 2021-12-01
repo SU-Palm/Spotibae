@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.spotibae.Activities.User.UserProfile;
 import com.example.spotibae.R;
@@ -18,6 +19,8 @@ public class ChangeAgePreference extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     Button doneButton;
+    ImageView backButton;
+
     EditText lowestAgePref;
     EditText highestAgePref;
 
@@ -39,6 +42,8 @@ public class ChangeAgePreference extends AppCompatActivity {
 
             if(lowestAgeText.isEmpty() || highestAgeText.isEmpty()) {
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             } else {
                 long lowestAgeNum = Long.parseLong(lowestAgeText);
@@ -46,8 +51,19 @@ public class ChangeAgePreference extends AppCompatActivity {
                 changeAgePref(lowestAgeNum, highestAgeNum, uid);
 
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             }
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, UserProfile.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            startActivity(intent);
         });
     }
 

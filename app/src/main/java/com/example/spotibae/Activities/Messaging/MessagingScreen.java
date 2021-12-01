@@ -11,6 +11,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.Bundle;
 
+import com.example.spotibae.Activities.User.UserProfile;
+import com.example.spotibae.Activities.Welcome.BaseActivity;
 import com.example.spotibae.Adapter.MessagesAdapter;
 import com.example.spotibae.Models.Messages;
 import com.example.spotibae.R;
@@ -75,6 +77,7 @@ public class MessagingScreen extends AppCompatActivity {
     MessagesAdapter messagesAdapter;
     ArrayList<Messages> messagesArrayList;
     String userEmail;
+    ImageView backButton;
 
 
     @Override
@@ -120,8 +123,11 @@ public class MessagingScreen extends AppCompatActivity {
                 messagesArrayList.clear();
                 for(DataSnapshot snapshot1:snapshot.getChildren()) {
                     Messages messages=snapshot1.getValue(Messages.class);
+                    System.out.println("Printing Messages: " + messages.toString());
                     messagesArrayList.add(messages);
                 }
+                messagesAdapter=new MessagesAdapter(MessagingScreen.this,messagesArrayList);
+                mmessagerecyclerview.setAdapter(messagesAdapter);
                 messagesAdapter.notifyDataSetChanged();
             }
 
@@ -166,6 +172,14 @@ public class MessagingScreen extends AppCompatActivity {
                     mgetmessage.setText(null);
                 }
             }
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("FRAGMENT_SELECTED", "Matches");
+            startActivity(intent);
         });
     }
 
@@ -220,5 +234,4 @@ public class MessagingScreen extends AppCompatActivity {
             messagesAdapter.notifyDataSetChanged();
         }
     }
-
 }

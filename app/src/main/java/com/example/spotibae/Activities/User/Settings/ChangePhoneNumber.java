@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.spotibae.Activities.User.UserProfile;
 import com.example.spotibae.R;
@@ -17,6 +18,7 @@ public class ChangePhoneNumber extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     Button doneButton;
+    ImageView backButton;
     EditText phoneNumber;
 
     @Override
@@ -34,12 +36,25 @@ public class ChangePhoneNumber extends AppCompatActivity {
             String phoneNumberText = phoneNumber.getText().toString();
             if(phoneNumberText.isEmpty()) {
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             } else {
                 changePhoneNumber(phoneNumberText, uid);
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             }
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, UserProfile.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            startActivity(intent);
         });
     }
 

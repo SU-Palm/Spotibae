@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.spotibae.Activities.User.UserProfile;
 import com.example.spotibae.R;
@@ -17,7 +19,9 @@ public class ChangeName extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     Button doneButton;
-    EditText name;
+    ImageView backButton;
+    EditText firstName;
+    EditText lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +32,49 @@ public class ChangeName extends AppCompatActivity {
         String uid = mAuth.getUid();
 
         doneButton = findViewById(R.id.changeName);
-        name = findViewById(R.id.editTextName);
+        firstName = findViewById(R.id.editTextFirstName);
+        lastName = findViewById(R.id.editTextLastName);
         doneButton.setOnClickListener( view -> {
-            String nameText = name.getText().toString();
-            if(nameText.isEmpty()) {
+            String nameText = firstName.getText().toString().concat(" ").concat(lastName.getText().toString());
+            boolean checker = checkForNumbers(nameText);
+            if(checker && !nameText.equals(" ")) {
+                changeName(nameText, uid);
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             } else {
-                changeName(nameText, uid);
-
-                Intent intent = new Intent(this, UserProfile.class);
-                startActivity(intent);
+                Toast.makeText(ChangeName.this, "Invalid Name Inputted",
+                        Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(this, UserProfile.class);
+                //startActivity(intent);
             }
         });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, UserProfile.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            startActivity(intent);
+        });
+    }
+
+    public boolean checkForNumbers(String sample) {
+        char[] chars = sample.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for(char c : chars){
+            if(Character.isDigit(c)){
+                sb.append(c);
+            }
+        }
+
+        if(sb.length() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void changeName(String nameText, String uid) {

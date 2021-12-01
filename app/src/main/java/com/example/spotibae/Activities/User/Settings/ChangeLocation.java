@@ -13,6 +13,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class ChangeLocation extends AppCompatActivity {
     Button doneButton;
     Button setLocationButton;
     TextView mlocation;
+    ImageView backButton;
     String uid;
 
     // Google maps
@@ -54,14 +56,25 @@ public class ChangeLocation extends AppCompatActivity {
         setLocationButton = findViewById(R.id.setLocation);
         mlocation = findViewById(R.id.textLocation);
         doneButton.setOnClickListener( view -> {
-                Intent intent = new Intent(this, UserProfile.class);
-                startActivity(intent);
+            Intent intent = new Intent(this, UserProfile.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            startActivity(intent);
         });
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationButton.setOnClickListener( view -> {
             getLocation();
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, UserProfile.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            startActivity(intent);
         });
 
     }

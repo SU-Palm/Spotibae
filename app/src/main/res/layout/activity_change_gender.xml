@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".Activities.User.Settings.ChangeGender">
 
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/back_button"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="279dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <TextView
         android:id="@+id/gender"
         android:layout_width="wrap_content"
@@ -14,8 +26,9 @@
         android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/spotifyGreen"
         android:layout_marginLeft="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton"/>
 
     <Button
         android:id="@+id/buttonMale"
@@ -28,6 +41,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gender" />
 
+    <ImageView
+        android:id="@+id/selectedMale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:elevation="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/buttonMale"
+        app:layout_constraintTop_toTopOf="@+id/buttonMale"
+        app:srcCompat="@drawable/selected"
+        android:visibility="invisible"/>
+
     <Button
         android:id="@+id/buttonFemale"
         android:layout_width="match_parent"
@@ -38,6 +64,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMale" />
+
+    <ImageView
+        android:id="@+id/selectedFemale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:elevation="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/buttonFemale"
+        app:layout_constraintTop_toTopOf="@+id/buttonFemale"
+        app:srcCompat="@drawable/selected"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/buttonTheyThem"
@@ -50,10 +89,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonFemale" />
 
+    <ImageView
+        android:id="@+id/selectedTheyThem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:elevation="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/buttonTheyThem"
+        app:layout_constraintTop_toTopOf="@+id/buttonTheyThem"
+        app:srcCompat="@drawable/selected"
+        android:visibility="invisible"/>
+
     <Button
         android:id="@+id/changeGender"
-        android:layout_width="327dp"
-        android:layout_height="50dp"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
         android:text="Done"

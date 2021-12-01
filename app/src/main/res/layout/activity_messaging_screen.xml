@@ -8,6 +8,18 @@
     tools:context=".Activities.Messaging.MessagingScreen">
 
     <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/back_button"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="279dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
         android:id="@+id/profilePic"
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -43,6 +55,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="5dp"
         android:backgroundTint="@color/spotifyGreen"
+        android:elevation="100dp"
         android:ems="10"
         android:inputType="none"
         android:paddingBottom="25dp"
@@ -52,8 +65,7 @@
         android:theme="@style/themeText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="100dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

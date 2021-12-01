@@ -10,11 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -65,6 +67,8 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -109,12 +113,6 @@ public class UserProfile extends AppCompatActivity {
     TextView userBio;
     TextView userName;
     TextView userGender;
-
-    // Testing
-    TextView userSpotifyData1;
-    TextView userSpotifyData2;
-    Button getToken;
-    Button getCode;
 
     // Uploading image and other stuff
     private Uri filepath;
@@ -218,6 +216,9 @@ public class UserProfile extends AppCompatActivity {
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                                         // ...
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        String uId = user.getUid();
+                                        FirebaseDatabase.getInstance().getReference("UserData").child(uId).child("firstLogin").setValue(false);
                                     }
                                 });
                             } catch (FileNotFoundException e) {
@@ -458,7 +459,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                profilePic.setImageBitmap(Bitmap.createScaledBitmap(getCroppedBitmap(bitmap),  350 ,400, true));
+                profilePic.setImageBitmap(Bitmap.createScaledBitmap(getCroppedBitmap(bitmap),  350 ,350, true));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -498,6 +499,8 @@ public class UserProfile extends AppCompatActivity {
     public void setListeners() {
         doneButton.setOnClickListener( view -> {
             Intent intent = new Intent(this, BaseActivity.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         signOutButton.setOnClickListener(v -> {
@@ -505,30 +508,45 @@ public class UserProfile extends AppCompatActivity {
         });
         phoneNumberButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangePhoneNumber.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         distanceButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeDistance.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            intent.putExtra("CURRENT_DISTANCE", userDistance.getText().toString());
             startActivity(intent);
         });
         genderPrefButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeGenderMatchPreference.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         bioButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeBio.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         genderButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeGender.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         nameButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeName.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         agePrefButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ChangeAgePreference.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         uploadPicButton.setOnClickListener( view -> {
@@ -539,18 +557,12 @@ public class UserProfile extends AppCompatActivity {
         });
         locationButton.setOnClickListener( view -> {
             Intent intent = new Intent(this, ChangeLocation.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
         passwordResetButton.setOnClickListener( view -> {
             passwordReset();
-        });
-
-        // Testing Spotify Auth
-        getToken.setOnClickListener( view -> {
-            onRequestTokenClicked();
-        });
-        getCode.setOnClickListener( view -> {
-            onRequestCodeClicked();
         });
     }
 
@@ -584,12 +596,6 @@ public class UserProfile extends AppCompatActivity {
 
         //ImageView
         profilePic = findViewById(R.id.profilePic);
-
-        // Spotify Testing
-        userSpotifyData1 = findViewById(R.id.response_text_view_1);
-        userSpotifyData2 = findViewById(R.id.response_text_view_2);
-        getToken = findViewById(R.id.getToken);
-        getCode = findViewById(R.id.getCode);
     }
 
     public void initData() {
@@ -629,7 +635,12 @@ public class UserProfile extends AppCompatActivity {
                     userBio.setText(bio);
                     userName.setText(fullName);
                     userGender.setText(gender);
-                    setImage(email);
+                    boolean firstLogin = Boolean.parseBoolean(user.get("firstLogin").toString());
+                    if(firstLogin) {
+                        Picasso.get().load(R.drawable.defaultprofile).centerCrop().resize(350,350).transform(new UserProfile.CircleTransform()).into(profilePic);
+                    } else {
+                        setImage(email);
+                    }
                 }
             }
         });
@@ -690,21 +701,19 @@ public class UserProfile extends AppCompatActivity {
 
     // Spotify Stuff
     public void authenticateAuthSpotify() throws InterruptedException {
-        onGetUserTopTracks();
-        Thread.sleep(500);
-        onGetUserTopArtists();
+        getUserRequestToken();
     }
 
-    public void onRequestCodeClicked() {
+    public void getUserRequestCode() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
         AuthorizationClient.openLoginActivity(this, AUTH_CODE_REQUEST_CODE, request);
     }
 
-    public void onRequestTokenClicked() {
+    public void getUserRequestToken() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
         AuthorizationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request);
     }
-
+    /*
     private void setResponse1(final String text) {
         runOnUiThread(() -> {
             final TextView responseView = findViewById(R.id.response_text_view_1);
@@ -718,6 +727,7 @@ public class UserProfile extends AppCompatActivity {
             responseView.setText(text);
         });
     }
+    */
 
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, REDIRECT_URI)
@@ -725,16 +735,6 @@ public class UserProfile extends AppCompatActivity {
                 .setScopes(new String[]{"user-read-email", "user-top-read"})
                 .setCampaign("your-campaign-token")
                 .build();
-    }
-
-    private void updateTokenView() {
-        final TextView tokenView = findViewById(R.id.token_text_view);
-        tokenView.setText(getString(R.string.token, mAccessToken));
-    }
-
-    private void updateCodeView() {
-        final TextView codeView = findViewById(R.id.code_text_view);
-        codeView.setText(getString(R.string.code, mAccessCode));
     }
 
     @Override
@@ -746,10 +746,22 @@ public class UserProfile extends AppCompatActivity {
         }
         if (requestCode == AUTH_TOKEN_REQUEST_CODE) {
             mAccessToken = response.getAccessToken();
-            updateTokenView();
+            try {
+                onGetUserTopTracks();
+                Thread.sleep(500);
+                onGetUserTopArtists();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else if (requestCode == AUTH_CODE_REQUEST_CODE) {
             mAccessCode = response.getCode();
-            updateCodeView();
+            try {
+                onGetUserTopTracks();
+                Thread.sleep(500);
+                onGetUserTopArtists();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -771,18 +783,16 @@ public class UserProfile extends AppCompatActivity {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                setResponse1("Failed to fetch data: " + e);
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                System.out.println("Printing test json" + testSongJson);
-                JsonObject jsonObject = new JsonParser().parse(testSongJson).getAsJsonObject();
+                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                //JsonObject jsonObject = new JsonParser().parse(testSongJson).getAsJsonObject();
                 JsonArray songArray = jsonObject.getAsJsonArray("items");
                 List<Song> songList = createListSongs(songArray);
                 addUserFavoriteSongsToFirebase(songList);
-                setResponse1(songList.toString());
             }
         });
     }
@@ -806,18 +816,16 @@ public class UserProfile extends AppCompatActivity {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                setResponse2("Failed to fetch data: " + e);
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                System.out.println("Printing test json" + testArtistJson);
-                JsonObject jsonObject = new JsonParser().parse(testArtistJson).getAsJsonObject();
+                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                //JsonObject jsonObject = new JsonParser().parse(testArtistJson).getAsJsonObject();
                 JsonArray artistArray = jsonObject.getAsJsonArray("items");
                 List<Artist> artistList = createListArtists(artistArray);
                 addUserFavoriteArtistsToFirebase(artistList);
-                setResponse2(artistList.toString());
             }
         });
     }
@@ -894,7 +902,7 @@ public class UserProfile extends AppCompatActivity {
     public List<Artist> createListArtists(JsonArray itemArray) {
         List<Artist> artistList = new ArrayList<>();
 
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 2; i++) {
             JsonObject json = itemArray.get(i).getAsJsonObject();
             Artist artist = createArtist(json);
             artistList.add(artist);
@@ -911,5 +919,40 @@ public class UserProfile extends AppCompatActivity {
             songList.add(song);
         }
         return songList;
+    }
+
+    public class CircleTransform implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+            if (squaredBitmap != source) {
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap,
+                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+
+            squaredBitmap.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "circle";
+        }
     }
 }

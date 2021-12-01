@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.spotibae.Activities.User.UserProfile;
 import com.example.spotibae.R;
@@ -20,7 +22,11 @@ public class ChangeGender extends AppCompatActivity {
     Button maleButton;
     Button femaleButton;
     Button theyThemButton;
+    ImageView backButton;
     String genderSelected = null;
+    ImageView selectedTheyThem;
+    ImageView selectedMale;
+    ImageView selectedFemale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +41,59 @@ public class ChangeGender extends AppCompatActivity {
         femaleButton = findViewById(R.id.buttonFemale);
         theyThemButton = findViewById(R.id.buttonTheyThem);
         doneButton.setOnClickListener( view -> {
-            if(genderSelected.isEmpty() || genderSelected == null) {
+            if(genderSelected == null || genderSelected.isEmpty()) {
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             } else {
                 changeGender(genderSelected, uid);
                 Intent intent = new Intent(this, UserProfile.class);
+                String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+                intent.putExtra("FRAGMENT_SELECTED", fragSelected);
                 startActivity(intent);
             }
         });
+
+        selectedTheyThem = findViewById(R.id.selectedTheyThem);
+        selectedMale = findViewById(R.id.selectedMale);
+        selectedFemale = findViewById(R.id.selectedFemale);
         maleButton.setOnClickListener(view -> {
             genderSelected = maleButton.getText().toString();
+            if(selectedTheyThem.isShown()) {
+                selectedTheyThem.setVisibility(View.INVISIBLE);
+            } else if(selectedFemale.isShown()) {
+                selectedFemale.setVisibility(View.INVISIBLE);
+            }
+            selectedMale.setVisibility(View.VISIBLE);
         });
         femaleButton.setOnClickListener(view -> {
             genderSelected = femaleButton.getText().toString();
+            if(selectedTheyThem.isShown()) {
+                selectedTheyThem.setVisibility(View.INVISIBLE);
+            } else if(selectedMale.isShown()) {
+                selectedMale.setVisibility(View.INVISIBLE);
+            }
+            selectedFemale.setVisibility(View.VISIBLE);
         });
+
         theyThemButton.setOnClickListener(view -> {
             genderSelected = theyThemButton.getText().toString();
+            if(selectedFemale.isShown()) {
+                selectedFemale.setVisibility(View.INVISIBLE);
+            } else if(selectedMale.isShown()) {
+                selectedMale.setVisibility(View.INVISIBLE);
+            }
+            selectedTheyThem.setVisibility(View.VISIBLE);
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener( view -> {
+            Intent intent = new Intent(this, UserProfile.class);
+            String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            startActivity(intent);
         });
     }
 

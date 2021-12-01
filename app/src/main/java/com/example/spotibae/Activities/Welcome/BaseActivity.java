@@ -57,6 +57,7 @@ public class BaseActivity extends AppCompatActivity {
     StorageReference profileRef;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    public String fragSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,22 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         btm_nav = findViewById(R.id.bottom_navigation);
         profileImageButton = findViewById(R.id.profilePic);
-
-        getFragment(new UserFrag());
+        System.out.println("FRAGMENT_SELECTED In User Profile onCreate() Before: " + fragSelected);
+        fragSelected = isNotNullOrEmpty(getIntent().getStringExtra("FRAGMENT_SELECTED")) ? getIntent().getStringExtra("FRAGMENT_SELECTED") : "Dashboard";
+        System.out.println("FRAGMENT_SELECTED In User Profile onCreate() After: " + fragSelected);
+        if(fragSelected.equals("Dashboard")) {
+            getFragment(new UserFrag());
+            btm_nav.setSelectedItemId(R.id.navMatch);
+            fragSelected = "Dashboard";
+        } else if(fragSelected.equals("Matches")) {
+            getFragment(new MessagesFrag());
+            btm_nav.setSelectedItemId(R.id.navMessages);
+            fragSelected = "Matches";
+        } else {
+            getFragment(new QRFrag());
+            btm_nav.setSelectedItemId(R.id.navQR);
+            fragSelected = "QR";
+        }
 
         btm_nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -73,14 +88,17 @@ public class BaseActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.navMatch:
                         getFragment(new UserFrag());
+                        fragSelected = "Dashboard";
                         return true;
 
                     case R.id.navMessages:
                         getFragment(new MessagesFrag());
+                        fragSelected = "Matches";
                         return true;
 
                     case R.id.navQR:
                         getFragment(new QRFrag());
+                        fragSelected = "QR";
                         return true;
                 }
                 return false;
@@ -89,6 +107,7 @@ public class BaseActivity extends AppCompatActivity {
 
         profileImageButton.setOnClickListener( view -> {
             Intent intent = new Intent(this, UserProfile.class);
+            intent.putExtra("FRAGMENT_SELECTED", fragSelected);
             startActivity(intent);
         });
 
@@ -97,6 +116,10 @@ public class BaseActivity extends AppCompatActivity {
         storageRef = storage.getReference();
 
         getEmailAndSetImage();
+    }
+
+    private static boolean isNotNullOrEmpty(String str){
+        return (str != null && !str.isEmpty());
     }
 
     private void getEmailAndSetImage() {
@@ -111,7 +134,12 @@ public class BaseActivity extends AppCompatActivity {
                 else {
                     HashMap<String, Object> user = (HashMap<String, Object>) task.getResult().getValue();
                     String email = user.get("email").toString();
-                    setImage(email);
+                    boolean firstLogin = Boolean.parseBoolean(user.get("firstLogin").toString());
+                    if(firstLogin) {
+                        Picasso.get().load(R.drawable.defaultprofile).centerCrop().resize(60,60).transform(new CircleTransform()).into(profileImageButton);
+                    } else {
+                        setImage(email);
+                    }
                 }
             }
         });
@@ -194,6 +222,27 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public String key() {
             return "circle";
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        System.out.println("FRAGMENT_SELECTED In User Profile onStart() Before: " + fragSelected);
+        fragSelected = isNotNullOrEmpty(getIntent().getStringExtra("FRAGMENT_SELECTED")) ? getIntent().getStringExtra("FRAGMENT_SELECTED") : "Dashboard";
+        System.out.println("FRAGMENT_SELECTED In User Profile onStart() After: " + fragSelected);
+        if(fragSelected.equals("Dashboard")) {
+            getFragment(new UserFrag());
+            btm_nav.setSelectedItemId(R.id.navMatch);
+            fragSelected = "Dashboard";
+        } else if(fragSelected.equals("Matches")) {
+            getFragment(new MessagesFrag());
+            btm_nav.setSelectedItemId(R.id.navMessages);
+            fragSelected = "Matches";
+        } else {
+            getFragment(new QRFrag());
+            btm_nav.setSelectedItemId(R.id.navQR);
+            fragSelected = "QR";
         }
     }
 }
