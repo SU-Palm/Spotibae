@@ -144,4 +144,16 @@ public class ChangeLocation extends AppCompatActivity {
     public void changeLocation(String location, String uid) {
         mDatabase.child(uid).child("location").setValue(location);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+    }
 }

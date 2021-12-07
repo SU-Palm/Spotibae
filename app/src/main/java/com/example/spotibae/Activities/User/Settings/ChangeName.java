@@ -84,4 +84,16 @@ public class ChangeName extends AppCompatActivity {
         mDatabase.child(uid).child("lastName").setValue(lastName);
         mDatabase.child(uid).child("fullName").setValue(nameText);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+    }
 }

@@ -3,6 +3,12 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+def getClientID() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("CLIENT_ID")
+}
+
 android {
     compileSdk 31
 
@@ -14,6 +20,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "CLIENT_ID", "\""+getClientID()+"\""
     }
 
     buildTypes {

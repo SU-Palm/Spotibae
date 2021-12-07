@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.spotibae.Activities.User.UserProfile;
 import com.example.spotibae.Activities.Welcome.BaseActivity;
+import com.example.spotibae.BuildConfig;
 import com.example.spotibae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,7 +60,7 @@ public class MusicPlayer extends AppCompatActivity {
     String userEmail;
     long songDuration;
     long timeElapsedCode = 0;
-    private static final String CLIENT_ID = "04fabd9b23d4470e8c29414d750c8d0f";
+    private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
     private static final String REDIRECT_URI = "http://com.example.spotibae/callback";
     private SpotifyAppRemote mSpotifyAppRemote;
     public int i = 0;
@@ -466,5 +467,17 @@ public class MusicPlayer extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
 }

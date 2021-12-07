@@ -61,4 +61,16 @@ public class ChangePhoneNumber extends AppCompatActivity {
     public void changePhoneNumber(String phoneNumber, String uid) {
         mDatabase.child(uid).child("phoneNumber").setValue(phoneNumber);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+    }
 }

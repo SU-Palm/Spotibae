@@ -234,4 +234,16 @@ public class MessagingScreen extends AppCompatActivity {
             messagesAdapter.notifyDataSetChanged();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+    }
 }

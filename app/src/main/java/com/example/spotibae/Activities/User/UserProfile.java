@@ -36,6 +36,7 @@ import com.example.spotibae.Activities.User.Settings.ChangeName;
 import com.example.spotibae.Activities.User.Settings.ChangePhoneNumber;
 import com.example.spotibae.Activities.Welcome.BaseActivity;
 import com.example.spotibae.Activities.Welcome.WelcomeScreen;
+import com.example.spotibae.BuildConfig;
 import com.example.spotibae.Models.Album;
 import com.example.spotibae.Models.Artist;
 import com.example.spotibae.Models.Song;
@@ -133,7 +134,7 @@ public class UserProfile extends AppCompatActivity {
     private final String GENDER_KEY = "gender";
 
     // Spotify Remote App
-    private static final String CLIENT_ID = "04fabd9b23d4470e8c29414d750c8d0f";
+    private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
     private static final String REDIRECT_URI = "http://com.example.spotibae/callback";
     private SpotifyAppRemote mSpotifyAppRemote;
 
@@ -146,7 +147,6 @@ public class UserProfile extends AppCompatActivity {
     private Call mCall;
     String testArtistJson;
     String testSongJson;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -501,6 +501,7 @@ public class UserProfile extends AppCompatActivity {
             Intent intent = new Intent(this, BaseActivity.class);
             String fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString();
             intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            intent.putExtra("PROFILE_VAR", "PROFILE");
             startActivity(intent);
         });
         signOutButton.setOnClickListener(v -> {
@@ -772,7 +773,7 @@ public class UserProfile extends AppCompatActivity {
         }
 
         final Request requestTopTracks = new Request.Builder()
-                .url("https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=2&offset=1")
+                .url("https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=5&offset=1")
                 .addHeader("Authorization","Bearer " + mAccessToken)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -804,7 +805,7 @@ public class UserProfile extends AppCompatActivity {
         }
 
         final Request requestTopTracks = new Request.Builder()
-                .url("https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=2&offset=1")
+                .url("https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=5&offset=1")
                 .addHeader("Authorization","Bearer " + mAccessToken)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -902,7 +903,7 @@ public class UserProfile extends AppCompatActivity {
     public List<Artist> createListArtists(JsonArray itemArray) {
         List<Artist> artistList = new ArrayList<>();
 
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 5; i++) {
             JsonObject json = itemArray.get(i).getAsJsonObject();
             Artist artist = createArtist(json);
             artistList.add(artist);
@@ -913,7 +914,7 @@ public class UserProfile extends AppCompatActivity {
     public List<Song> createListSongs(JsonArray itemArray) {
         List<Song> songList = new ArrayList<>();
 
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 5; i++) {
             JsonObject json = itemArray.get(i).getAsJsonObject();
             Song song = createSong(json);
             songList.add(song);

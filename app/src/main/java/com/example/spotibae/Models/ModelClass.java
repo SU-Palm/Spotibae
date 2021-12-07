@@ -7,6 +7,7 @@ public class ModelClass {
     private String textview1;
     private String textview2;
     private String textview3;
+
     //new code
     private String divider;
 
@@ -36,7 +37,6 @@ public class ModelClass {
         return divider;
     }
 
-
     public String getTextview2() {
         return textview2;
     }
@@ -44,6 +44,4 @@ public class ModelClass {
     public String getTextview3() {
         return textview3;
     }
-
-
 }

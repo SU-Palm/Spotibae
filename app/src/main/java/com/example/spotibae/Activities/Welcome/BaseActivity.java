@@ -58,10 +58,12 @@ public class BaseActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     public String fragSelected;
+    public String var;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        var = isNotNullOrEmpty(getIntent().getStringExtra("PROFILE_VAR")) ? getIntent().getStringExtra("PROFILE_VAR") : null;
         setContentView(R.layout.activity_base);
         btm_nav = findViewById(R.id.bottom_navigation);
         profileImageButton = findViewById(R.id.profilePic);
@@ -87,17 +89,21 @@ public class BaseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navMatch:
-                        getFragment(new UserFrag());
+                        setAnimLeft(new UserFrag());
                         fragSelected = "Dashboard";
                         return true;
 
                     case R.id.navMessages:
-                        getFragment(new MessagesFrag());
+                        if(fragSelected == "QR") {
+                            setAnimLeft(new MessagesFrag());
+                        } else {
+                            setAnimRight(new MessagesFrag());
+                        }
                         fragSelected = "Matches";
                         return true;
 
                     case R.id.navQR:
-                        getFragment(new QRFrag());
+                        setAnimRight(new QRFrag());
                         fragSelected = "QR";
                         return true;
                 }
@@ -108,6 +114,7 @@ public class BaseActivity extends AppCompatActivity {
         profileImageButton.setOnClickListener( view -> {
             Intent intent = new Intent(this, UserProfile.class);
             intent.putExtra("FRAGMENT_SELECTED", fragSelected);
+            var = "Clicked";
             startActivity(intent);
         });
 
@@ -184,6 +191,19 @@ public class BaseActivity extends AppCompatActivity {
         return output;
     }
 
+    private void setAnimRight(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fm.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void setAnimLeft(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
+        fragmentTransaction.commit();
+    }
+
     private void getFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
@@ -244,5 +264,28 @@ public class BaseActivity extends AppCompatActivity {
             btm_nav.setSelectedItemId(R.id.navQR);
             fragSelected = "QR";
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("var" + var);
+        if(isNotNullOrEmpty(var)) {
+            System.out.println("var");
+            overridePendingTransition(R.transition.slide_in_up, R.transition.slide_out_up);
+        } else {
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(var == "Clicked") {
+            overridePendingTransition(R.transition.slide_in_down, R.transition.slide_out_down);
+        } else {
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+        }
+        var = null;
     }
 }
