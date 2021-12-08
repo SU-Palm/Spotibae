@@ -1,21 +1,21 @@
 package com.example.spotibae.Models
 
 class Artist {
-    var id: String? = null
-    var name: String? = null
-    var href: String? = null
-    var genre: String? = null
-    var imageURI: String? = null
-    var uri: String? = null
+    lateinit var id: String
+    lateinit var name: String
+    lateinit var href: String
+    lateinit var genre: String
+    lateinit var imageURI: String
+    lateinit var uri: String
 
     constructor() {}
     constructor(
-        id: String?,
-        name: String?,
-        href: String?,
-        genre: String?,
-        imageURI: String?,
-        uri: String?
+        id: String,
+        name: String,
+        href: String,
+        genre: String,
+        imageURI: String,
+        uri: String
     ) {
         this.id = id
         this.name = name

@@ -50,8 +50,7 @@ class MatchingFrag : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var view: View?
-        view = inflater.inflate(R.layout.fragment_matching, container, false)
+        val view = inflater.inflate(R.layout.fragment_user, container, false)
         matchButton = view?.findViewById(R.id.matchButton)
         denyButton = view?.findViewById(R.id.denyButton)
         return view

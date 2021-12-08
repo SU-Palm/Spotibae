@@ -61,18 +61,18 @@ class BaseActivity : AppCompatActivity() {
         println("FRAGMENT_SELECTED In User Profile onCreate() After: $fragSelected")
         fragSelected = if (fragSelected == "Dashboard") {
             getFragment(UserFrag())
-            btm_nav.setSelectedItemId(R.id.navMatch)
+            btm_nav?.setSelectedItemId(R.id.navMatch)
             "Dashboard"
         } else if (fragSelected == "Matches") {
             getFragment(MessagesFrag())
-            btm_nav.setSelectedItemId(R.id.navMessages)
+            btm_nav?.setSelectedItemId(R.id.navMessages)
             "Matches"
         } else {
             getFragment(QRFrag())
-            btm_nav.setSelectedItemId(R.id.navQR)
+            btm_nav?.setSelectedItemId(R.id.navQR)
             "QR"
         }
-        btm_nav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        btm_nav?.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navMatch -> {
                     setAnimLeft(UserFrag())
@@ -96,7 +96,7 @@ class BaseActivity : AppCompatActivity() {
             }
             false
         })
-        profileImageButton.setOnClickListener(View.OnClickListener { view: View? ->
+        profileImageButton?.setOnClickListener(View.OnClickListener { view: View? ->
             val intent = Intent(this, UserProfile::class.java)
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             `var` = "Clicked"

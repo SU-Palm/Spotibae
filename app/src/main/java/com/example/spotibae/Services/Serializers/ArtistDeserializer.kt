@@ -2,7 +2,6 @@ package com.example.spotibae.Services.Serializers
 
 import com.example.spotibae.Models.Artist
 import kotlin.Throws
-import com.example.spotibae.Models.Song
 import com.google.gson.*
 import java.lang.reflect.Type
 

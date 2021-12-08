@@ -8,43 +8,30 @@ import com.example.spotibae.R
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Intent
 import com.example.spotibae.Activities.User.UserProfile
-import androidx.annotation.RequiresApi
-import android.os.Build
-import android.widget.SeekBar.OnSeekBarChangeListener
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import android.location.Geocoder
-import androidx.core.app.ActivityCompat
-import android.content.pm.PackageManager
-import android.view.View
 import android.widget.*
-import com.example.spotibae.Activities.User.Settings.ChangeLocation
-import com.google.android.gms.tasks.OnSuccessListener
 import java.lang.StringBuilder
 
 class ChangeName : AppCompatActivity() {
-    private var mAuth: FirebaseAuth? = null
+    private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var mDatabase: DatabaseReference? = null
-    var doneButton: Button? = null
-    var backButton: ImageView? = null
-    var firstName: EditText? = null
-    var lastName: EditText? = null
-
+    private lateinit var doneButton: Button
+    private lateinit var backButton: ImageView
+    private lateinit var firstName: EditText
+    private lateinit var lastName: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_name)
-        mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData")
-        val uid = mAuth!!.uid
+        val uid = mAuth.uid
         doneButton = findViewById<Button>(R.id.changeName)
         firstName = findViewById<EditText>(R.id.editTextFirstName)
         lastName = findViewById(R.id.editTextLastName)
-        doneButton?.setOnClickListener(View.OnClickListener { view: View? ->
-            val nameText = firstName?.getText().toString() + " " + lastName?.getText().toString()
+        doneButton.setOnClickListener {
+            val nameText = firstName.text.toString() + " " + lastName.text.toString()
             val checker = checkForNumbers(nameText)
             if (checker && nameText != " ") {
-                changeName(nameText, uid)
+                changeName(nameText, uid!!)
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)
@@ -57,17 +44,17 @@ class ChangeName : AppCompatActivity() {
                 //Intent intent = new Intent(this, UserProfile.class);
                 //startActivity(intent);
             }
-        })
+        }
         backButton = findViewById(R.id.backButton)
-        backButton?.setOnClickListener(View.OnClickListener { view: View? ->
+        backButton.setOnClickListener {
             val intent = Intent(this, UserProfile::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
-        })
+        }
     }
 
-    fun checkForNumbers(sample: String): Boolean {
+    private fun checkForNumbers(sample: String): Boolean {
         val chars = sample.toCharArray()
         val sb = StringBuilder()
         for (c in chars) {
@@ -82,10 +69,10 @@ class ChangeName : AppCompatActivity() {
         }
     }
 
-    fun changeName(nameText: String, uid: String?) {
+    private fun changeName(nameText: String, uid: String) {
         val firstName = nameText.substring(0, nameText.indexOf(" "))
         val lastName = nameText.substring(nameText.indexOf(" ") + 1)
-        mDatabase!!.child(uid!!).child("firstName").setValue(firstName)
+        mDatabase!!.child(uid).child("firstName").setValue(firstName)
         mDatabase!!.child(uid).child("lastName").setValue(lastName)
         mDatabase!!.child(uid).child("fullName").setValue(nameText)
     }

@@ -8,62 +8,51 @@ import com.example.spotibae.R
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Intent
 import com.example.spotibae.Activities.User.UserProfile
-import androidx.annotation.RequiresApi
-import android.os.Build
-import android.widget.SeekBar.OnSeekBarChangeListener
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import android.location.Geocoder
-import androidx.core.app.ActivityCompat
-import android.content.pm.PackageManager
-import android.view.View
 import android.widget.*
-import com.example.spotibae.Activities.User.Settings.ChangeLocation
-import com.google.android.gms.tasks.OnSuccessListener
 
 class ChangePhoneNumber : AppCompatActivity() {
-    private var mAuth: FirebaseAuth? = null
+    private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var mDatabase: DatabaseReference? = null
-    var doneButton: Button? = null
-    var backButton: ImageView? = null
-    var phoneNumber: EditText? = null
+    private lateinit var doneButton: Button
+    private lateinit var backButton: ImageView
+    private lateinit var phoneNumber: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_phone_number)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData")
-        val uid = mAuth!!.uid
+        val uid = mAuth.uid
 
         doneButton = findViewById(R.id.changePhoneNumber)
         phoneNumber = findViewById(R.id.editTextPhone)
 
-        doneButton?.setOnClickListener(View.OnClickListener { view: View? ->
-            val phoneNumberText = phoneNumber?.getText().toString()
+        doneButton.setOnClickListener {
+            val phoneNumberText = phoneNumber.text.toString()
             if (phoneNumberText.isEmpty()) {
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)
                 startActivity(intent)
             } else {
-                changePhoneNumber(phoneNumberText, uid)
+                changePhoneNumber(phoneNumberText, uid!!)
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)
                 startActivity(intent)
             }
-        })
+        }
         backButton = findViewById(R.id.backButton)
-        backButton?.setOnClickListener(View.OnClickListener { view: View? ->
+        backButton.setOnClickListener {
             val intent = Intent(this, UserProfile::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
-        })
+        }
     }
 
-    fun changePhoneNumber(phoneNumber: String?, uid: String?) {
-        mDatabase!!.child(uid!!).child("phoneNumber").setValue(phoneNumber)
+    private fun changePhoneNumber(phoneNumber: String, uid: String) {
+        mDatabase!!.child(uid).child("phoneNumber").setValue(phoneNumber)
     }
 
     override fun onResume() {

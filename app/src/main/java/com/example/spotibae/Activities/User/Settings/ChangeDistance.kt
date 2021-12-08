@@ -11,67 +11,59 @@ import com.example.spotibae.Activities.User.UserProfile
 import androidx.annotation.RequiresApi
 import android.os.Build
 import android.widget.SeekBar.OnSeekBarChangeListener
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import android.location.Geocoder
-import androidx.core.app.ActivityCompat
-import android.content.pm.PackageManager
-import android.view.View
 import android.widget.*
-import com.example.spotibae.Activities.User.Settings.ChangeLocation
-import com.google.android.gms.tasks.OnSuccessListener
 
 class ChangeDistance : AppCompatActivity() {
-    private var mAuth: FirebaseAuth? = null
-    private var mDatabase: DatabaseReference? = null
-    var doneButton: Button? = null
-    var backButton: ImageView? = null
-    var distance: TextView? = null
-    var seekBar: SeekBar? = null
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: DatabaseReference
+    private lateinit var doneButton: Button
+    private lateinit var backButton: ImageView
+    private lateinit var distance: TextView
+    private lateinit var seekBar: SeekBar
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_distance)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData")
-        val uid = mAuth!!.uid
+        val uid = mAuth.uid
         doneButton = findViewById(R.id.changeDistance)
         distance = findViewById(R.id.totalDistance)
-        val userDistance = intent.getStringExtra("CURRENT_DISTANCE")
-        distance?.setText(userDistance)
-        doneButton?.setOnClickListener(View.OnClickListener { view: View? ->
-            val checker = distance?.getText().toString()
+        val userDistance = intent.getStringExtra("CURRENT_DISTANCE")!!
+        distance.text = userDistance
+        doneButton.setOnClickListener {
+            val checker = distance.text.toString()
             if (checker.isEmpty()) {
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)
                 startActivity(intent)
             } else {
-                val distanceNum = distance?.getText().toString().toLong()
-                changeDistance(distanceNum, uid)
+                val distanceNum = distance.text.toString().toLong()
+                changeDistance(distanceNum, uid!!)
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)
                 startActivity(intent)
             }
-        })
+        }
         backButton = findViewById(R.id.backButton)
-        backButton?.setOnClickListener(View.OnClickListener { view: View? ->
+        backButton.setOnClickListener {
             val intent = Intent(this, UserProfile::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
-        })
+        }
         seekBar = findViewById(R.id.changeDistanceSeekBar)
-        seekBar?.setMax(200)
-        seekBar?.setMin(0)
-        seekBar?.setProgress(userDistance!!.toInt())
-        seekBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        seekBar.max = 200
+        seekBar.min = 0
+        seekBar.progress = userDistance.toInt()
+        seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             var progressChangedValue = 0
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 progressChangedValue = progress
-                distance?.setText(progress.toString())
+                distance.text = progress.toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -87,8 +79,8 @@ class ChangeDistance : AppCompatActivity() {
         })
     }
 
-    fun changeDistance(distanceNum: Long, uid: String?) {
-        mDatabase!!.child(uid!!).child("distance").setValue(distanceNum)
+    private fun changeDistance(distanceNum: Long, uid: String) {
+        mDatabase.child(uid).child("distance").setValue(distanceNum)
     }
 
     override fun onResume() {

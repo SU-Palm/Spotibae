@@ -11,13 +11,9 @@ import android.graphics.*
 import com.example.spotibae.Activities.Messaging.MessagingScreen
 import com.example.spotibae.Activities.Messaging.MusicPlayer
 import android.widget.TextView
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.FirebaseStorage
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.OnFailureListener
 import android.view.View
 import android.widget.ImageView
-import com.google.firebase.auth.FirebaseAuth
 
 class Adapter(private val userList: List<ModelClass>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -105,28 +101,6 @@ class Adapter(private val userList: List<ModelClass>) : RecyclerView.Adapter<Ada
                 val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 90, 90, true))
             }.addOnFailureListener { }
-        }
-
-        fun getCroppedBitmap(bitmap: Bitmap): Bitmap {
-            val output = Bitmap.createBitmap(
-                bitmap.width,
-                bitmap.height, Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(output)
-            val color = -0xbdbdbe
-            val paint = Paint()
-            val rect = Rect(0, 0, bitmap.width, bitmap.height)
-            paint.isAntiAlias = true
-            canvas.drawARGB(0, 0, 0, 0)
-            paint.color = color
-            // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-            canvas.drawCircle(
-                (bitmap.width / 2).toFloat(), (bitmap.height / 2).toFloat(), (
-                        bitmap.width / 2).toFloat(), paint
-            )
-            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-            canvas.drawBitmap(bitmap, rect, rect, paint)
-            return output
         }
 
         init {

@@ -14,12 +14,7 @@ import android.os.Bundle
 import com.example.spotibae.R
 import com.google.firebase.database.FirebaseDatabase
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.activity.result.ActivityResultCallback
 import android.provider.MediaStore
-import com.google.firebase.storage.UploadTask
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.auth.FirebaseUser
 import android.widget.Toast
 import com.example.spotibae.Activities.Welcome.BaseActivity
 import com.example.spotibae.Activities.User.Settings.ChangePhoneNumber
@@ -30,11 +25,9 @@ import com.example.spotibae.Activities.User.Settings.ChangeGender
 import com.example.spotibae.Activities.User.Settings.ChangeName
 import com.example.spotibae.Activities.User.Settings.ChangeAgePreference
 import com.example.spotibae.Activities.User.Settings.ChangeLocation
-import com.google.firebase.database.DataSnapshot
 import com.squareup.picasso.Picasso
 import com.example.spotibae.Activities.Welcome.WelcomeScreen
 import com.spotify.android.appremote.api.ConnectionParams
-import com.example.spotibae.Activities.User.UserProfile
 import com.spotify.android.appremote.api.Connector.ConnectionListener
 import kotlin.Throws
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -43,14 +36,11 @@ import com.spotify.sdk.android.auth.AuthorizationClient
 import com.example.spotibae.Models.Song
 import com.example.spotibae.Services.Serializers.ArtistDeserializer
 import com.example.spotibae.Services.Serializers.SongDeserializer
-import com.example.spotibae.Services.Serializers.AlbumDeserializer
 import android.net.Uri
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import com.example.spotibae.BuildConfig
-import com.example.spotibae.Models.Album
 import com.example.spotibae.Models.Artist
 import com.google.gson.*
 import com.squareup.picasso.Transformation
@@ -62,40 +52,49 @@ import java.util.ArrayList
 import java.util.HashMap
 
 class UserProfile : AppCompatActivity() {
-    private var mAuth: FirebaseAuth? = null
-    private var mDatabase: DatabaseReference? = null
+    // Spotify Remote Auth
+    private val CLIENT_ID = BuildConfig.CLIENT_ID
+    private val REDIRECT_URI = "http://com.example.spotibae/callback"
+
+    // Spotify Auth
+    val AUTH_TOKEN_REQUEST_CODE = 0x10
+    val AUTH_CODE_REQUEST_CODE = 0x11
+
+    private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    lateinit private var mDatabase: DatabaseReference
     var storage = FirebaseStorage.getInstance()
-    var storageRef: StorageReference? = null
-    var profileRef: StorageReference? = null
-    var doneButton: TextView? = null
-    var signOutButton: Button? = null
-    var phoneNumberButton: Button? = null
-    var distanceButton: Button? = null
-    var genderPrefButton: Button? = null
-    var bioButton: Button? = null
-    var genderButton: Button? = null
-    var nameButton: Button? = null
-    var agePrefButton: Button? = null
-    var verifySpotifyButton: Button? = null
-    var locationButton: Button? = null
-    var passwordResetButton: Button? = null
-    var profileName: TextView? = null
-    var userEmailAddress: TextView? = null
-    var userPhoneNumber: TextView? = null
-    var userLocation: TextView? = null
-    var userDistance: TextView? = null
-    var userAgePref: TextView? = null
-    var genderPrefText: TextView? = null
-    var userBio: TextView? = null
-    var userName: TextView? = null
-    var userGender: TextView? = null
+    private lateinit var storageRef: StorageReference
+    private lateinit var profileRef: StorageReference
+
+    private lateinit var doneButton: TextView
+    private lateinit var signOutButton: Button
+    private lateinit var phoneNumberButton: Button
+    private lateinit var distanceButton: Button
+    private lateinit var genderPrefButton: Button
+    private lateinit var bioButton: Button
+    private lateinit var genderButton: Button
+    private lateinit var nameButton: Button
+    private lateinit var agePrefButton: Button
+    private lateinit var verifySpotifyButton: Button
+    private lateinit var locationButton: Button
+    private lateinit var passwordResetButton: Button
+    private lateinit var profileName: TextView
+    private lateinit var userEmailAddress: TextView
+    private lateinit var userPhoneNumber: TextView
+    private lateinit var userLocation: TextView
+    private lateinit var userDistance: TextView
+    private lateinit var userAgePref: TextView
+    private lateinit var genderPrefText: TextView
+    private lateinit var userBio: TextView
+    private lateinit var userName: TextView
+    private lateinit var userGender: TextView
 
     // Uploading image and other stuff
-    private var filepath: Uri? = null
+    private lateinit var filepath: Uri
     private val PICK_IMAGE_REQUEST = -1
-    var activityResultLauncher: ActivityResultLauncher<Intent>? = null
-    var profilePic: ImageView? = null
-    var uploadPicButton: ImageView? = null
+    private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
+    private lateinit var profilePic: ImageView
+    private lateinit var uploadPicButton: ImageView
 
     // Keys for persistent storage
     private val EMAIL_KEY = "email"
@@ -112,8 +111,9 @@ class UserProfile : AppCompatActivity() {
     private var mAccessToken: String? = null
     private var mAccessCode: String? = null
     private var mCall: Call? = null
-    var testArtistJson: String? = null
-    var testSongJson: String? = null
+    private lateinit var testArtistJson: String
+    private lateinit var testSongJson: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -125,16 +125,16 @@ class UserProfile : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData")
         storageRef = storage.reference
         if (savedInstanceState != null) {
-            profileName!!.text = savedInstanceState.getString(NAME_KEY)
-            userEmailAddress!!.text = savedInstanceState.getString(EMAIL_KEY)
-            userPhoneNumber!!.text = savedInstanceState.getString(PHONE_NUM_KEY)
-            userLocation!!.text = savedInstanceState.getString(LOCATION_KEY)
-            userDistance!!.text = savedInstanceState.getString(DISTANCE_KEY)
-            userAgePref!!.text = savedInstanceState.getString(AGE_PREF_KEY)
-            genderPrefText!!.text = savedInstanceState.getString(SHOW_ME_KEY)
-            userBio!!.text = savedInstanceState.getString(BIO_KEY)
-            userName!!.text = savedInstanceState.getString(NAME_KEY)
-            userGender!!.text = savedInstanceState.getString(GENDER_KEY)
+            profileName.text = savedInstanceState.getString(NAME_KEY)
+            userEmailAddress.text = savedInstanceState.getString(EMAIL_KEY)
+            userPhoneNumber.text = savedInstanceState.getString(PHONE_NUM_KEY)
+            userLocation.text = savedInstanceState.getString(LOCATION_KEY)
+            userDistance.text = savedInstanceState.getString(DISTANCE_KEY)
+            userAgePref.text = savedInstanceState.getString(AGE_PREF_KEY)
+            genderPrefText.text = savedInstanceState.getString(SHOW_ME_KEY)
+            userBio.text = savedInstanceState.getString(BIO_KEY)
+            userName.text = savedInstanceState.getString(NAME_KEY)
+            userGender.text = savedInstanceState.getString(GENDER_KEY)
         } else {
             initData()
         }
@@ -145,10 +145,10 @@ class UserProfile : AppCompatActivity() {
         ) { result ->
             println("Result Code: " + result.resultCode + " ")
             if (result.resultCode == PICK_IMAGE_REQUEST) {
-                filepath = result.data!!.data
+                filepath = result.data!!.data!!
                 try {
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filepath)
-                    profilePic!!.setImageBitmap(
+                    profilePic.setImageBitmap(
                         Bitmap.createScaledBitmap(
                             getCroppedBitmap(bitmap),
                             350,
@@ -160,28 +160,15 @@ class UserProfile : AppCompatActivity() {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                     val data = baos.toByteArray()
                     profileRef =
-                        storageRef!!.child("User").child(userEmailAddress!!.text.toString())
+                        storageRef.child("User").child(userEmailAddress.text.toString())
                             .child("profilePic.png")
-                    val uploadTask = profileRef!!.putBytes(data)
+                    val uploadTask = profileRef.putBytes(data)
 
-                    // Saving image to external storage
-                    /*
-                                        String path = Environment.getExternalStorageDirectory().toString();
-                                        Bitmap bitmapSave = Bitmap.createScaledBitmap(getCroppedBitmap(bitmap),  350 ,400, true);
-                                        OutputStream fOut = null;
-                                        Integer counter = 0;
-                                        File file = new File(path, "profilePhoto"+counter+".jpg");
-                                        fOut = new FileOutputStream(file);
-                                        bitmapSave.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
-                                        fOut.flush();
-                                        fOut.close();
-                                        MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
-                                         */uploadTask.addOnFailureListener {
+                    uploadTask.addOnFailureListener {
                         // Handle unsuccessful uploads
                     }
-                        .addOnSuccessListener { // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                            val user = mAuth!!.currentUser
+                        .addOnSuccessListener {
+                            val user = mAuth.currentUser
                             val uId = user!!.uid
                             FirebaseDatabase.getInstance().getReference("UserData").child(uId)
                                 .child("firstLogin").setValue(false)
@@ -399,25 +386,25 @@ class UserProfile : AppCompatActivity() {
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(EMAIL_KEY, userEmailAddress!!.text.toString())
-        outState.putString(PHONE_NUM_KEY, userPhoneNumber!!.text.toString())
-        outState.putString(LOCATION_KEY, userLocation!!.text.toString())
-        outState.putString(DISTANCE_KEY, userDistance!!.text.toString())
-        outState.putString(AGE_PREF_KEY, userAgePref!!.text.toString())
-        outState.putString(SHOW_ME_KEY, genderPrefText!!.text.toString())
-        outState.putString(BIO_KEY, userBio!!.text.toString())
-        outState.putString(NAME_KEY, userName!!.text.toString())
-        outState.putString(GENDER_KEY, userGender!!.text.toString())
+        outState.putString(EMAIL_KEY, userEmailAddress.text.toString())
+        outState.putString(PHONE_NUM_KEY, userPhoneNumber.text.toString())
+        outState.putString(LOCATION_KEY, userLocation.text.toString())
+        outState.putString(DISTANCE_KEY, userDistance.text.toString())
+        outState.putString(AGE_PREF_KEY, userAgePref.text.toString())
+        outState.putString(SHOW_ME_KEY, genderPrefText.text.toString())
+        outState.putString(BIO_KEY, userBio.text.toString())
+        outState.putString(NAME_KEY, userName.text.toString())
+        outState.putString(GENDER_KEY, userGender.text.toString())
         super.onSaveInstanceState(outState)
     }
 
-    fun setImage(email: String?) {
+    fun setImage(email: String) {
         val storageReference = FirebaseStorage.getInstance().reference
-        val photoReference = storageReference.child("User").child(email!!).child("profilePic.png")
+        val photoReference = storageReference.child("User").child(email).child("profilePic.png")
         val ONE_MEGABYTE = (1024 * 1024).toLong()
         photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            profilePic!!.setImageBitmap(
+            profilePic.setImageBitmap(
                 Bitmap.createScaledBitmap(
                     getCroppedBitmap(bitmap),
                     350,
@@ -428,13 +415,13 @@ class UserProfile : AppCompatActivity() {
         }.addOnFailureListener {
             Toast.makeText(
                 applicationContext,
-                "No Such file or Path found!!",
+                "No Such file or Path found",
                 Toast.LENGTH_LONG
             ).show()
         }
     }
 
-    fun getCroppedBitmap(bitmap: Bitmap): Bitmap {
+    private fun getCroppedBitmap(bitmap: Bitmap): Bitmap {
         val output = Bitmap.createBitmap(
             bitmap.width,
             bitmap.height, Bitmap.Config.ARGB_8888
@@ -460,73 +447,73 @@ class UserProfile : AppCompatActivity() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        activityResultLauncher!!.launch(Intent.createChooser(intent, "Select Picture"))
+        activityResultLauncher?.launch(Intent.createChooser(intent, "Select Picture"))
     }
 
-    fun setListeners() {
-        doneButton!!.setOnClickListener { view: View? ->
+    private fun setListeners() {
+        doneButton.setOnClickListener {
             val intent = Intent(this, BaseActivity::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             intent.putExtra("PROFILE_VAR", "PROFILE")
             startActivity(intent)
         }
-        signOutButton!!.setOnClickListener { v: View? -> signOut() }
-        phoneNumberButton!!.setOnClickListener { view: View? ->
+        signOutButton.setOnClickListener { signOut() }
+        phoneNumberButton.setOnClickListener {
             val intent = Intent(this, ChangePhoneNumber::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        distanceButton!!.setOnClickListener { view: View? ->
+        distanceButton.setOnClickListener {
             val intent = Intent(this, ChangeDistance::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
-            intent.putExtra("CURRENT_DISTANCE", userDistance!!.text.toString())
+            intent.putExtra("CURRENT_DISTANCE", userDistance.text.toString())
             startActivity(intent)
         }
-        genderPrefButton!!.setOnClickListener { view: View? ->
+        genderPrefButton.setOnClickListener {
             val intent = Intent(this, ChangeGenderMatchPreference::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        bioButton!!.setOnClickListener { view: View? ->
+        bioButton.setOnClickListener {
             val intent = Intent(this, ChangeBio::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        genderButton!!.setOnClickListener { view: View? ->
+        genderButton.setOnClickListener {
             val intent = Intent(this, ChangeGender::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        nameButton!!.setOnClickListener { view: View? ->
+        nameButton.setOnClickListener {
             val intent = Intent(this, ChangeName::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        agePrefButton!!.setOnClickListener { view: View? ->
+        agePrefButton.setOnClickListener {
             val intent = Intent(this, ChangeAgePreference::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        uploadPicButton!!.setOnClickListener { view: View? -> chooseImage() }
-        verifySpotifyButton!!.setOnClickListener { view: View? -> authenticateAppRemoteSpotify() }
-        locationButton!!.setOnClickListener { view: View? ->
+        uploadPicButton.setOnClickListener { chooseImage() }
+        verifySpotifyButton.setOnClickListener { authenticateAppRemoteSpotify() }
+        locationButton.setOnClickListener {
             val intent = Intent(this, ChangeLocation::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
         }
-        passwordResetButton!!.setOnClickListener { view: View? -> passwordReset() }
+        passwordResetButton.setOnClickListener { passwordReset() }
     }
 
-    fun setViews() {
+    private fun setViews() {
         // TextViews
         profileName = findViewById(R.id.profileName)
         userEmailAddress = findViewById(R.id.userEmailAddress)
@@ -559,17 +546,15 @@ class UserProfile : AppCompatActivity() {
     }
 
     fun initData() {
-        val user = mAuth!!.currentUser
+        val user = mAuth.currentUser
         val uId = user!!.uid
-        mDatabase!!.child(uId).get().addOnCompleteListener { task ->
+        mDatabase.child(uId).get().addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.e("firebase", "Error getting data", task.exception)
             } else {
                 Log.d("firebase User", task.result.value.toString())
-                val user = task.result.value as HashMap<String, Any>?
-                val firstName = user!!["firstName"].toString()
-                val lastName = user["lastName"].toString()
-                val age = user["age"] as Long
+                val user = task.result.value as HashMap<*, *>
+                val firstName = user["firstName"].toString()
                 val email = user["email"].toString()
                 val fullName = user["fullName"].toString()
                 val bio = user["bio"].toString()
@@ -579,18 +564,17 @@ class UserProfile : AppCompatActivity() {
                 val lowestAgePref = user["lowestAgePref"] as Long
                 val highestAgePref = user["highestAgePref"] as Long
                 val genderPref = user["genderPref"].toString()
-                val spotifyVerified = user["spotifyVerified"] as Boolean
                 val location = user["location"].toString()
-                profileName!!.text = firstName
-                userEmailAddress!!.text = email
-                userPhoneNumber!!.text = phoneNumber
-                userLocation!!.text = location
-                userDistance!!.text = distance.toString()
-                userAgePref!!.text = "$lowestAgePref - $highestAgePref"
-                genderPrefText!!.text = genderPref
-                userBio!!.text = bio
-                userName!!.text = fullName
-                userGender!!.text = gender
+                profileName.text = firstName
+                userEmailAddress.text = email
+                userPhoneNumber.text = phoneNumber
+                userLocation.text = location
+                userDistance.text = distance.toString()
+                userAgePref.text = "$lowestAgePref - $highestAgePref"
+                genderPrefText.text = genderPref
+                userBio.text = bio
+                userName.text = fullName
+                userGender.text = gender
                 val firstLogin = java.lang.Boolean.parseBoolean(user["firstLogin"].toString())
                 if (firstLogin) {
                     Picasso.get().load(R.drawable.defaultprofile).centerCrop().resize(350, 350)
@@ -604,14 +588,14 @@ class UserProfile : AppCompatActivity() {
         }
     }
 
-    fun signOut() {
-        mAuth!!.signOut()
+    private fun signOut() {
+        mAuth.signOut()
         val intent = Intent(this, WelcomeScreen::class.java)
         this.startActivity(intent)
     }
 
-    fun passwordReset() {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(userEmailAddress!!.text.toString())
+    private fun passwordReset() {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(userEmailAddress.text.toString())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("MainActivity", "Email sent.")
@@ -619,7 +603,7 @@ class UserProfile : AppCompatActivity() {
             }
     }
 
-    fun authenticateAppRemoteSpotify() {
+    private fun authenticateAppRemoteSpotify() {
         val connectionParams = ConnectionParams.Builder(CLIENT_ID)
             .setRedirectUri(REDIRECT_URI)
             .showAuthView(true)
@@ -630,9 +614,9 @@ class UserProfile : AppCompatActivity() {
                     mSpotifyAppRemote = spotifyAppRemote
                     Log.d("MainActivity", "Connected! Yay!")
                     // Now you can start interacting with App Remote
-                    val user = mAuth!!.currentUser
+                    val user = mAuth.currentUser
                     val uid = user!!.uid
-                    mDatabase!!.child(uid).child("spotifyVerified").setValue(true)
+                    mDatabase.child(uid).child("spotifyVerified").setValue(true)
                     try {
                         authenticateAuthSpotify()
                     } catch (e: InterruptedException) {
@@ -650,38 +634,17 @@ class UserProfile : AppCompatActivity() {
 
     // Spotify Stuff
     @Throws(InterruptedException::class)
-    fun authenticateAuthSpotify() {
-        userRequestToken
+    private fun authenticateAuthSpotify() {
+        userRequestToken()
     }
 
-    val userRequestCode: Unit
-        get() {
-            val request = getAuthenticationRequest(AuthorizationResponse.Type.CODE)
-            AuthorizationClient.openLoginActivity(this, AUTH_CODE_REQUEST_CODE, request)
-        }
-    val userRequestToken: Unit
-        get() {
-            val request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN)
-            AuthorizationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request)
-        }
-
-    /*
-    private void setResponse1(final String text) {
-        runOnUiThread(() -> {
-            final TextView responseView = findViewById(R.id.response_text_view_1);
-            responseView.setText(text);
-        });
+    private fun userRequestToken() {
+        val request = AuthorizationResponse.Type.TOKEN.getAuthenticationRequest()
+        AuthorizationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request)
     }
 
-    private void setResponse2(final String text) {
-        runOnUiThread(() -> {
-            final TextView responseView = findViewById(R.id.response_text_view_2);
-            responseView.setText(text);
-        });
-    }
-    */
-    private fun getAuthenticationRequest(type: AuthorizationResponse.Type): AuthorizationRequest {
-        return AuthorizationRequest.Builder(CLIENT_ID, type, REDIRECT_URI)
+    private fun AuthorizationResponse.Type.getAuthenticationRequest(): AuthorizationRequest {
+        return AuthorizationRequest.Builder(CLIENT_ID, this, REDIRECT_URI)
             .setShowDialog(false)
             .setScopes(arrayOf("user-read-email", "user-top-read"))
             .setCampaign("your-campaign-token")
@@ -691,7 +654,7 @@ class UserProfile : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val response = AuthorizationClient.getResponse(resultCode, data)
-        if (response.error != null && !response.error.isEmpty()) {
+        if (response.error != null && response.error.isNotEmpty()) {
             Log.d("Spotify Auth", "Failed")
         }
         if (requestCode == AUTH_TOKEN_REQUEST_CODE) {
@@ -774,7 +737,7 @@ class UserProfile : AppCompatActivity() {
 
     private fun cancelCall() {
         if (mCall != null) {
-            mCall!!.cancel()
+            mCall?.cancel()
         }
     }
 
@@ -789,9 +752,11 @@ class UserProfile : AppCompatActivity() {
             hashSongs["uri"] = song.uri
             hashHashSongs[song.id] = hashSongs
         }
-        val user = mAuth!!.currentUser
-        val uId = user!!.uid
-        mDatabase!!.child(uId).child("favoriteSongs").setValue(hashHashSongs)
+        val user = mAuth.currentUser
+        if(user != null) {
+            val uId = user.uid
+            mDatabase.child(uId).child("favoriteSongs").setValue(hashHashSongs)
+        }
     }
 
     fun addUserFavoriteArtistsToFirebase(artists: List<Artist>) {
@@ -806,17 +771,14 @@ class UserProfile : AppCompatActivity() {
             hashArtists["uri"] = artist.uri
             hashHashArtists[artist.id] = hashArtists
         }
-        val user = mAuth!!.currentUser
-        val uId = user!!.uid
-        mDatabase!!.child(uId).child("favoriteArtists").setValue(hashHashArtists)
+        val user = mAuth.currentUser
+        if(user != null) {
+            val uId = user.uid
+            mDatabase.child(uId).child("favoriteArtists").setValue(hashHashArtists)
+        }
     }
 
-    // Putting into Service Directory
-    fun createUserSpotifyFavorites() {
-        val listOfSpotify: Map<String, Map<String, String>> = HashMap()
-    }
-
-    fun createArtist(json: JsonElement?): Artist {
+    private fun createArtist(json: JsonElement?): Artist {
         val gson = GsonBuilder()
             .registerTypeAdapter(
                 Artist::class.java,
@@ -826,18 +788,11 @@ class UserProfile : AppCompatActivity() {
         return gson.fromJson(json, Artist::class.java)
     }
 
-    fun createSong(json: JsonElement?): Song {
+    private fun createSong(json: JsonElement?): Song {
         val gson = GsonBuilder()
             .registerTypeAdapter(Song::class.java, SongDeserializer())
             .create()
         return gson.fromJson(json, Song::class.java)
-    }
-
-    fun createAlbum(json: JsonElement?): Album {
-        val gson = GsonBuilder()
-            .registerTypeAdapter(Album::class.java, AlbumDeserializer())
-            .create()
-        return gson.fromJson(json, Album::class.java)
     }
 
     fun createListArtists(itemArray: JsonArray): List<Artist> {
@@ -887,15 +842,5 @@ class UserProfile : AppCompatActivity() {
         override fun key(): String {
             return "circle"
         }
-    }
-
-    companion object {
-        // Spotify Remote App
-        private const val CLIENT_ID = BuildConfig.CLIENT_ID
-        private const val REDIRECT_URI = "http://com.example.spotibae/callback"
-
-        // Spotify Auth
-        const val AUTH_TOKEN_REQUEST_CODE = 0x10
-        const val AUTH_CODE_REQUEST_CODE = 0x11
     }
 }

@@ -1,14 +1,14 @@
 package com.example.spotibae.Models
 
 class Song {
-    var id: String? = null
-    var name: String? = null
-    var artistName: String? = null
-    var href: String? = null
-    var uri: String? = null
+    lateinit var id: String
+    lateinit var name: String
+    lateinit var artistName: String
+    lateinit var href: String
+    lateinit var uri: String
 
     constructor() {}
-    constructor(id: String?, name: String?, artistName: String?, href: String?, uri: String?) {
+    constructor(id: String, name: String, artistName: String, href: String, uri: String) {
         this.id = id
         this.artistName = artistName
         this.name = name

@@ -7,28 +7,21 @@ import android.graphics.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import androidx.recyclerview.widget.RecyclerView
-import com.example.spotibae.Adapter.MessagesAdapter
 import android.os.Bundle
 import com.example.spotibae.R
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.example.spotibae.Activities.Welcome.BaseActivity
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.FirebaseStorage
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.OnFailureListener
 import android.view.View
 import android.widget.*
+import com.example.spotibae.Adapter.MessagesAdapter
 import com.example.spotibae.Models.Messages
 import java.text.SimpleDateFormat
 import java.util.*
-class MessagingScreen : AppCompatActivity() {
-}
 
-/*
 class MessagingScreen : AppCompatActivity() {
     var mgetmessage: EditText? = null
     var msendmessagebutton: ImageButton? = null
@@ -104,13 +97,13 @@ class MessagingScreen : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {}
         })
-        msendmessagebutton?.setOnClickListener(View.OnClickListener {
+        msendmessagebutton?.setOnClickListener {
             enteredmessage = mgetmessage?.getText().toString()
             if (enteredmessage!!.isEmpty()) {
                 Toast.makeText(applicationContext, "Enter message first", Toast.LENGTH_SHORT).show()
             } else {
                 val date = Date()
-                currenttime = simpleDateFormat!!.format(calendar?.getTime())
+                currenttime = simpleDateFormat!!.format(calendar?.time)
                 val messages = Messages(enteredmessage, firebaseAuth!!.uid, date.time, currenttime)
                 firebaseDatabase = FirebaseDatabase.getInstance()
                 firebaseDatabase!!.reference.child("chats")
@@ -126,7 +119,7 @@ class MessagingScreen : AppCompatActivity() {
                     }
                 mgetmessage?.setText(null)
             }
-        })
+        }
         backButton = findViewById(R.id.backButton)
         backButton?.setOnClickListener(View.OnClickListener { view: View? ->
             val intent = Intent(this, BaseActivity::class.java)
@@ -195,4 +188,3 @@ class MessagingScreen : AppCompatActivity() {
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
     }
 }
-*/

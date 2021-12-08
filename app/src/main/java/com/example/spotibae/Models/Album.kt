@@ -9,7 +9,6 @@ class Album {
     var imageURI: String? = null
     var uri: String? = null
 
-    constructor() {}
     constructor(
         id: Int,
         artistName: String?,

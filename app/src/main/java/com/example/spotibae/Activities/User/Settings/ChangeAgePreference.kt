@@ -8,38 +8,28 @@ import com.example.spotibae.R
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Intent
 import com.example.spotibae.Activities.User.UserProfile
-import androidx.annotation.RequiresApi
-import android.os.Build
-import android.widget.SeekBar.OnSeekBarChangeListener
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import android.location.Geocoder
-import androidx.core.app.ActivityCompat
-import android.content.pm.PackageManager
-import android.view.View
 import android.widget.*
-import com.example.spotibae.Activities.User.Settings.ChangeLocation
-import com.google.android.gms.tasks.OnSuccessListener
 
 class ChangeAgePreference : AppCompatActivity() {
-    private var mAuth: FirebaseAuth? = null
-    private var mDatabase: DatabaseReference? = null
-    var doneButton: Button? = null
-    var backButton: ImageView? = null
-    var lowestAgePref: EditText? = null
-    var highestAgePref: EditText? = null
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: DatabaseReference
+    private lateinit var doneButton: Button
+    private lateinit var backButton: ImageView
+    private lateinit var lowestAgePref: EditText
+    private lateinit var highestAgePref: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_age_preference)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference("UserData")
-        val uid = mAuth!!.uid
+        val uid = mAuth.uid
         doneButton = findViewById(R.id.changeAgePreference)
         lowestAgePref = findViewById(R.id.editTextLowestAge)
         highestAgePref = findViewById(R.id.editTextHighestAge)
-        doneButton?.setOnClickListener(View.OnClickListener { view: View? ->
-            val lowestAgeText = lowestAgePref?.getText().toString()
-            val highestAgeText = highestAgePref?.getText().toString()
+        doneButton.setOnClickListener {
+            val lowestAgeText = lowestAgePref.text.toString()
+            val highestAgeText = highestAgePref.text.toString()
             if (lowestAgeText.isEmpty() || highestAgeText.isEmpty()) {
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
@@ -48,25 +38,25 @@ class ChangeAgePreference : AppCompatActivity() {
             } else {
                 val lowestAgeNum = lowestAgeText.toLong()
                 val highestAgeNum = highestAgeText.toLong()
-                changeAgePref(lowestAgeNum, highestAgeNum, uid)
+                changeAgePref(lowestAgeNum, highestAgeNum, uid!!)
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)
                 startActivity(intent)
             }
-        })
+        }
         backButton = findViewById(R.id.backButton)
-        backButton?.setOnClickListener(View.OnClickListener { view: View? ->
+        backButton.setOnClickListener {
             val intent = Intent(this, UserProfile::class.java)
             val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
             intent.putExtra("FRAGMENT_SELECTED", fragSelected)
             startActivity(intent)
-        })
+        }
     }
 
-    fun changeAgePref(lowestAgeNum: Long, highestAgeNum: Long, uid: String?) {
-        mDatabase!!.child(uid!!).child("lowestAgePref").setValue(lowestAgeNum)
-        mDatabase!!.child(uid).child("highestAgePref").setValue(highestAgeNum)
+    private fun changeAgePref(lowestAgeNum: Long, highestAgeNum: Long, uid: String) {
+        mDatabase.child(uid).child("lowestAgePref").setValue(lowestAgeNum)
+        mDatabase.child(uid).child("highestAgePref").setValue(highestAgeNum)
     }
 
     override fun onResume() {
