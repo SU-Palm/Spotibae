@@ -7,7 +7,7 @@ class Messages {
     var currenttime: String? = null
 
     constructor() {}
-    constructor(message: String?, senderId: String?, timestamp: Long, currenttime: String?) {
+    constructor(message: String, senderId: String, timestamp: Long, currenttime: String) {
         this.message = message
         this.senderId = senderId
         this.timestamp = timestamp

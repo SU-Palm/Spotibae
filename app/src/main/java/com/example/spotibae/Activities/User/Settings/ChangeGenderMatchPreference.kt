@@ -24,7 +24,6 @@ class ChangeGenderMatchPreference : AppCompatActivity() {
     private lateinit var selectedMale: ImageView
     private lateinit var selectedFemale: ImageView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_gender)

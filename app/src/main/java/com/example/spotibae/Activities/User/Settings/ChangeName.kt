@@ -30,7 +30,7 @@ class ChangeName : AppCompatActivity() {
         doneButton.setOnClickListener {
             val nameText = firstName.text.toString() + " " + lastName.text.toString()
             val checker = checkForNumbers(nameText)
-            if (checker && nameText != " ") {
+            if(checker && nameText != " ") {
                 changeName(nameText, uid!!)
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
@@ -62,10 +62,10 @@ class ChangeName : AppCompatActivity() {
                 sb.append(c)
             }
         }
-        return if (sb.length == 0) {
-            true
+        if(sb.length == 0) {
+            return true
         } else {
-            false
+            return false
         }
     }
 

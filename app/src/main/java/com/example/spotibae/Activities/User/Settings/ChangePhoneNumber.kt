@@ -29,7 +29,7 @@ class ChangePhoneNumber : AppCompatActivity() {
 
         doneButton.setOnClickListener {
             val phoneNumberText = phoneNumber.text.toString()
-            if (phoneNumberText.isEmpty()) {
+            if(phoneNumberText.isEmpty()) {
                 val intent = Intent(this, UserProfile::class.java)
                 val fragSelected = getIntent().getStringExtra("FRAGMENT_SELECTED").toString()
                 intent.putExtra("FRAGMENT_SELECTED", fragSelected)

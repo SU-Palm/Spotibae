@@ -7,7 +7,6 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import android.os.Bundle
-import com.example.spotibae.Activities.Welcome.BaseActivity
 import com.example.spotibae.R
 import com.example.spotibae.Fragments.UserFrag
 import com.example.spotibae.Fragments.MessagesFrag
@@ -16,22 +15,11 @@ import android.content.Intent
 import android.graphics.*
 import com.example.spotibae.Activities.User.UserProfile
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
 import com.squareup.picasso.Picasso
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.OnFailureListener
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import com.google.firebase.auth.AuthResult
-import androidx.constraintlayout.helper.widget.MotionEffect
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.spotibae.Activities.Welcome.Signup
-import com.example.spotibae.Activities.Welcome.Login
 import com.squareup.picasso.Transformation
 import java.util.HashMap
 
@@ -41,11 +29,11 @@ class BaseActivity : AppCompatActivity() {
     var btm_nav: BottomNavigationView? = null
     var storage = FirebaseStorage.getInstance()
     var storageRef: StorageReference? = null
-    var profileRef: StorageReference? = null
     private var mAuth: FirebaseAuth? = null
     private var mDatabase: DatabaseReference? = null
     var fragSelected: String? = null
-    var `var`: String? = null
+    private var `var`: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         `var` =
@@ -53,12 +41,9 @@ class BaseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_base)
         btm_nav = findViewById(R.id.bottom_navigation)
         profileImageButton = findViewById(R.id.profilePic)
-        println("FRAGMENT_SELECTED In User Profile onCreate() Before: $fragSelected")
-        fragSelected =
-            if (isNotNullOrEmpty(intent.getStringExtra("FRAGMENT_SELECTED"))) intent.getStringExtra(
-                "FRAGMENT_SELECTED"
-            ) else "Dashboard"
-        println("FRAGMENT_SELECTED In User Profile onCreate() After: $fragSelected")
+
+        fragSelected = if (isNotNullOrEmpty(intent.getStringExtra("FRAGMENT_SELECTED"))) intent.getStringExtra("FRAGMENT_SELECTED") else "Dashboard"
+
         fragSelected = if (fragSelected == "Dashboard") {
             getFragment(UserFrag())
             btm_nav?.setSelectedItemId(R.id.navMatch)
@@ -69,7 +54,7 @@ class BaseActivity : AppCompatActivity() {
             "Matches"
         } else {
             getFragment(QRFrag())
-            btm_nav?.setSelectedItemId(R.id.navQR)
+            btm_nav?.selectedItemId = R.id.navQR
             "QR"
         }
         btm_nav?.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -248,9 +233,7 @@ class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        println("var$`var`")
         if (isNotNullOrEmpty(`var`)) {
-            println("var")
             overridePendingTransition(R.transition.slide_in_up, R.transition.slide_out_up)
         } else {
             overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)

@@ -28,8 +28,8 @@ class MessagesAdapter(var context: Context, var messagesArrayList: ArrayList<Mes
     }
 
     override fun getItemViewType(position: Int): Int {
-        val messages = messagesArrayList!![position]
-        return if (FirebaseAuth.getInstance().currentUser!!.uid == messages?.senderId) {
+        val messages = messagesArrayList[position]
+        return if (FirebaseAuth.getInstance().currentUser!!.uid == messages.senderId) {
             ITEM_SEND
         } else {
             ITEM_RECIEVE
@@ -37,39 +37,29 @@ class MessagesAdapter(var context: Context, var messagesArrayList: ArrayList<Mes
     }
 
     override fun getItemCount(): Int {
-        return messagesArrayList!!.size
+        return messagesArrayList.size
     }
 
     internal inner class SenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textViewmessaage: TextView
-        var timeofmessage: TextView
-
-        init {
-            textViewmessaage = itemView.findViewById(R.id.sendermessage)
-            timeofmessage = itemView.findViewById(R.id.timeofmessage)
-        }
+        var textViewmessaage: TextView = itemView.findViewById(R.id.sendermessage)
+        var timeofmessage: TextView = itemView.findViewById(R.id.timeofmessage)
     }
 
     internal inner class RecieverViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textViewmessaage: TextView
-        var timeofmessage: TextView
-
-        init {
-            textViewmessaage = itemView.findViewById(R.id.sendermessage)
-            timeofmessage = itemView.findViewById(R.id.timeofmessage)
-        }
+        var textViewmessaage: TextView = itemView.findViewById(R.id.sendermessage)
+        var timeofmessage: TextView = itemView.findViewById(R.id.timeofmessage)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val messages = messagesArrayList!![position]
+        val messages = messagesArrayList[position]
         if (holder.javaClass == SenderViewHolder::class.java) {
             val viewHolder = holder as SenderViewHolder
-            viewHolder.textViewmessaage.text = messages?.message
-            viewHolder.timeofmessage.text = messages?.currenttime
+            viewHolder.textViewmessaage.text = messages.message
+            viewHolder.timeofmessage.text = messages.currenttime
         } else {
             val viewHolder = holder as RecieverViewHolder
-            viewHolder.textViewmessaage.text = messages?.message
-            viewHolder.timeofmessage.text = messages?.currenttime
+            viewHolder.textViewmessaage.text = messages.message
+            viewHolder.timeofmessage.text = messages.currenttime
         }
     }
 }
