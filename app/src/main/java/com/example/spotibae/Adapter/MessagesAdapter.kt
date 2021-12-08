@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.example.spotibae.Models.Messages
 import java.util.ArrayList
 
-class MessagesAdapter(var context: Context, var messagesArrayList: ArrayList<Messages?>?) :
+class MessagesAdapter(var context: Context, var messagesArrayList: ArrayList<Messages>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var ITEM_SEND = 1
     var ITEM_RECIEVE = 2

@@ -1,5 +1,6 @@
 package com.example.spotibae.Activities.Messaging
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import android.content.Intent
@@ -15,7 +16,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.example.spotibae.Activities.Welcome.BaseActivity
 import com.google.firebase.storage.FirebaseStorage
-import android.view.View
 import android.widget.*
 import com.example.spotibae.Adapter.MessagesAdapter
 import com.example.spotibae.Models.Messages
@@ -23,32 +23,32 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MessagingScreen : AppCompatActivity() {
-    var mgetmessage: EditText? = null
-    var msendmessagebutton: ImageButton? = null
-    var msendmessagecardview: CardView? = null
-    var mimageviewofspecificuser: ImageView? = null
-    var mnameofspecificuser: TextView? = null
-    private var enteredmessage: String? = null
-    var intent = null
-    var mrecievername: String? = null
-    var sendername: String? = null
-    var mrecieveruid: String? = null
-    var msenderuid: String? = null
-    private var firebaseAuth: FirebaseAuth? = null
-    var firebaseDatabase: FirebaseDatabase? = null
-    var senderroom: String? = null
-    var recieverroom: String? = null
-    var mbackbuttonofspecificchat: ImageButton? = null
-    var mmessagerecyclerview: RecyclerView? = null
-    var currenttime: String? = null
-    var calendar: Calendar? = null
-    var simpleDateFormat: SimpleDateFormat? = null
-    var messagesAdapter: MessagesAdapter? = null
-    var messagesArrayList: ArrayList<Messages?>? = null
-    var userEmail: String? = null
-    var backButton: ImageView? = null
+    private lateinit var mgetmessage: EditText
+    private lateinit var msendmessagebutton: ImageButton
+    private lateinit var msendmessagecardview: CardView
+    private lateinit var mimageviewofspecificuser: ImageView
+    private lateinit var mnameofspecificuser: TextView
+    private lateinit var enteredmessage: String
+    private var intent = null
+    private lateinit var mrecievername: String
+    private lateinit var sendername: String
+    private lateinit var mrecieveruid: String
+    private lateinit var msenderuid: String
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var senderroom: String
+    private lateinit var recieverroom: String
+    private lateinit var mbackbuttonofspecificchat: ImageButton
+    private lateinit var mmessagerecyclerview: RecyclerView
+    private lateinit var currenttime: String
+    private lateinit var calendar: Calendar
+    private lateinit var simpleDateFormat: SimpleDateFormat
+    private lateinit var messagesAdapter: MessagesAdapter
+    private lateinit var messagesArrayList: ArrayList<Messages>
+    private lateinit var userEmail: String
+    private lateinit var backButton: ImageView
 
-
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging_screen)
@@ -61,80 +61,78 @@ class MessagingScreen : AppCompatActivity() {
         mmessagerecyclerview = findViewById(R.id.recyclerviewofspecific)
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.stackFromEnd = true
-        mmessagerecyclerview?.setLayoutManager(linearLayoutManager)
+        mmessagerecyclerview.layoutManager = linearLayoutManager
         messagesAdapter = MessagesAdapter(this@MessagingScreen, messagesArrayList)
-        mmessagerecyclerview?.setAdapter(messagesAdapter)
-        firebaseAuth = FirebaseAuth.getInstance()
+        mmessagerecyclerview.adapter = messagesAdapter
+        mAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
         calendar = Calendar.getInstance()
         simpleDateFormat = SimpleDateFormat("hh:mm a")
-        msenderuid = firebaseAuth!!.uid
-        mrecieveruid = getIntent().getStringExtra("receiveruid")
-        mrecievername = getIntent().getStringExtra("name")
-        userEmail = getIntent().getStringExtra("PROFILE_PIC_EMAIL")
+        msenderuid = mAuth.uid.toString()
+        mrecieveruid = getIntent().getStringExtra("receiveruid").toString()
+        mrecievername = getIntent().getStringExtra("name").toString()
+        userEmail = getIntent().getStringExtra("PROFILE_PIC_EMAIL").toString()
+
         senderroom = msenderuid + mrecieveruid
         recieverroom = mrecieveruid + msenderuid
         setImage(userEmail)
-        mnameofspecificuser?.setText(mrecievername)
-        val databaseReference = firebaseDatabase!!.reference.child("chats").child(
-            senderroom!!
-        ).child("messages")
+        mnameofspecificuser.text = mrecievername
+        val databaseReference = firebaseDatabase.reference.child("chats").child(senderroom).child("messages")
         messagesAdapter = MessagesAdapter(this@MessagingScreen, messagesArrayList)
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                messagesArrayList!!.clear()
+                messagesArrayList.clear()
                 for (snapshot1 in snapshot.children) {
                     val messages = snapshot1.getValue(
                         Messages::class.java
                     )
-                    println("Printing Messages: " + messages.toString())
-                    messagesArrayList!!.add(messages)
+                    if (messages != null) {
+                        messagesArrayList.add(messages)
+                    }
                 }
                 messagesAdapter = MessagesAdapter(this@MessagingScreen, messagesArrayList)
-                mmessagerecyclerview?.setAdapter(messagesAdapter)
-                messagesAdapter!!.notifyDataSetChanged()
+                mmessagerecyclerview.adapter = messagesAdapter
+                messagesAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {}
         })
-        msendmessagebutton?.setOnClickListener {
-            enteredmessage = mgetmessage?.getText().toString()
-            if (enteredmessage!!.isEmpty()) {
+        msendmessagebutton.setOnClickListener {
+            enteredmessage = mgetmessage.text.toString()
+            if (enteredmessage.isEmpty()) {
                 Toast.makeText(applicationContext, "Enter message first", Toast.LENGTH_SHORT).show()
             } else {
                 val date = Date()
-                currenttime = simpleDateFormat!!.format(calendar?.time)
-                val messages = Messages(enteredmessage, firebaseAuth!!.uid, date.time, currenttime)
+                currenttime = simpleDateFormat.format(calendar.time)
+                val messages = Messages(enteredmessage, mAuth.uid, date.time, currenttime)
                 firebaseDatabase = FirebaseDatabase.getInstance()
-                firebaseDatabase!!.reference.child("chats")
-                    .child(senderroom!!)
-                    .child("messages")
+                firebaseDatabase.reference.child("chats").child(senderroom).child("messages")
                     .push().setValue(messages).addOnCompleteListener {
-                        firebaseDatabase!!.reference
+                        firebaseDatabase.reference
                             .child("chats")
-                            .child(recieverroom!!)
+                            .child(recieverroom)
                             .child("messages")
                             .push()
                             .setValue(messages).addOnCompleteListener { }
                     }
-                mgetmessage?.setText(null)
+                mgetmessage.text = null
             }
         }
         backButton = findViewById(R.id.backButton)
-        backButton?.setOnClickListener(View.OnClickListener { view: View? ->
+        backButton.setOnClickListener {
             val intent = Intent(this, BaseActivity::class.java)
             intent.putExtra("FRAGMENT_SELECTED", "Matches")
             startActivity(intent)
-        })
+        }
     }
 
-    fun setImage(email: String?) {
+    private fun setImage(email: String) {
         val storageReference = FirebaseStorage.getInstance().reference
-        val photoReference = storageReference.child("User").child(email!!).child("profilePic.png")
+        val photoReference = storageReference.child("User").child(email).child("profilePic.png")
         val ONE_MEGABYTE = (1024 * 1024).toLong()
         photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            mimageviewofspecificuser!!.setImageBitmap(
+            mimageviewofspecificuser.setImageBitmap(
                 Bitmap.createScaledBitmap(
                     getCroppedBitmap(
                         bitmap
@@ -144,7 +142,7 @@ class MessagingScreen : AppCompatActivity() {
         }.addOnFailureListener { }
     }
 
-    fun getCroppedBitmap(bitmap: Bitmap): Bitmap {
+    private fun getCroppedBitmap(bitmap: Bitmap): Bitmap {
         val output = Bitmap.createBitmap(
             bitmap.width,
             bitmap.height, Bitmap.Config.ARGB_8888
@@ -168,13 +166,13 @@ class MessagingScreen : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        messagesAdapter!!.notifyDataSetChanged()
+        messagesAdapter.notifyDataSetChanged()
     }
 
     public override fun onStop() {
         super.onStop()
         if (messagesAdapter != null) {
-            messagesAdapter!!.notifyDataSetChanged()
+            messagesAdapter.notifyDataSetChanged()
         }
     }
 
